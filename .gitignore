@@ -3,3 +3,4 @@ target
 .idea
 classes
 lib
+config.properties
