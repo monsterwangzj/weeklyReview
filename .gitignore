@@ -4,3 +4,4 @@ target
 classes
 lib
 config.properties
+src/main/resources/config.properties
