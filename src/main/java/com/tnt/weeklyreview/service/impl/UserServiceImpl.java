@@ -1,19 +1,13 @@
 package com.tnt.weeklyreview.service.impl;
 
-import java.util.List;
-
 import com.tnt.weeklyreview.dao.UserInfoMapper;
 import com.tnt.weeklyreview.model.UserInfo;
 import com.tnt.weeklyreview.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- * 创建时间：2015-1-27 下午5:22:59
- * 
- * @author andy
- * @version 2.2
- */
+import java.util.List;
+
 @Service("userService")
 public class UserServiceImpl implements UserService {
 
