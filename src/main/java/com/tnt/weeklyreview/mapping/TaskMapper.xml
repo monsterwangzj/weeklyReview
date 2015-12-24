@@ -16,18 +16,18 @@
 		id, userid, task, rate, tasktype, date, createtime, lastmodified
 	</sql>
 
-	<insert id="insert" parameterType="com.tnt.weeklyreview.model.Task">
+	<insert id="save" parameterType="com.tnt.weeklyreview.model.Task">
 		insert into task (
 			id, userid, task, rate, tasktype, date, createtime, lastmodified
 		)
 		values (#{id,jdbcType=INTEGER},
-		#{userid,jdbcType=INTEGER},
+		#{userId,jdbcType=INTEGER},
 		#{task,jdbcType=VARCHAR},
 		#{rate,jdbcType=NUMERIC},
-		#{tasktype,jdbcType=INTEGER},
+		#{taskType,jdbcType=INTEGER},
 		#{date,jdbcType=INTEGER},
-		#{createtime,jdbcType=INTEGER},
-		#{lastmodified,jdbcType=INTEGER}
+		#{createTime,jdbcType=INTEGER},
+		#{lastModified,jdbcType=INTEGER}
 		)
 	</insert>
 

@@ -67,7 +67,7 @@
         $('#finish').on('click', function () {
             console.log("on submit button clicked");
             // 收集参数列表
-            var params = "";
+            var params = "uid=1&vipCount="  + vipNum + "&";
             for (var i = 1; i <= vipNum; i++) {
                 var textId = "vip-text" + i;
                 var textValue = $("#" + textId).val();
@@ -81,7 +81,7 @@
                 }
             }
             console.log(params);
-            $.get(".htmls", function(data) {
+            $.get("/weeklyreview/saveOrUpdateTask4Day.htmls?"+params, function(data) {
                 console.log(data);
             });
         });
