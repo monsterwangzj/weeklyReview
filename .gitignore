@@ -4,5 +4,6 @@ target
 classes
 lib
 src/main/resources/config.properties
+tmp
 work
 *.iml

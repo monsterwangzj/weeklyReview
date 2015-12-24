@@ -44,19 +44,21 @@
 		where id = #{id,jdbcType=INTEGER}
 	</update>
 
-	<resultMap type="com.tnt.weeklyreview.model.Task" id="TaskMap" extends="BaseResultMap">
-		<collection property="courseInfos" javaType="list"
-			ofType="com.tnt.weeklyreview.model.Task">
-			<id property="id" column="id" jdbcType="INTEGER" />
-			<result property="userid" column="userid" jdbcType="INTEGER" />
-			<result property="task" column="task" jdbcType="VARCHAR" />
-		</collection>
+	<resultMap type="com.tnt.weeklyreview.model.Task" id="TaskMap" >
+		<id property="id" column="id" jdbcType="INTEGER" />
+		<result property="userId" column="userid" jdbcType="INTEGER" />
+		<result property="task" column="task" jdbcType="VARCHAR" />
+		<result property="rate" column="rate" jdbcType="NUMERIC" />
+		<result property="taskType" column="tasktype" jdbcType="INTEGER" />
+		<result property="date" column="date" jdbcType="VARCHAR" />
+		<result property="createTime" column="createtime" jdbcType="INTEGER" />
+		<result property="lastModified" column="lastmodified" jdbcType="INTEGER" />
 	</resultMap>
 
-	<select id="getTasks4Day" resultMap="TaskMap" parameterType="java.lang.Integer">
+	<select id="getTasks4Day" resultMap="TaskMap" parameterType="java.util.Map">
 		select u.id, u.userid,
-		u.task from task u
-		where userid = #{userId,jdbcType=INTEGER}
+		u.task,u.rate,u.tasktype,u.date,u.createtime,u.lastmodified from task u
+		where userid = #{userId,jdbcType=INTEGER} and date = #{date,jdbcType=INTEGER}
 	</select>
 
 </mapper>

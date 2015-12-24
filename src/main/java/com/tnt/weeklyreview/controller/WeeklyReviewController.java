@@ -21,7 +21,7 @@ public class WeeklyReviewController {
 
     @RequestMapping("/getTask4Day")
     public @ResponseBody Object showUserInfos() {
-        List<Task> tasks = weeklyReviewService.getTasks4Day(1L, 0);
+        List<Task> tasks = weeklyReviewService.getTasks4Day(1L, 20151224);
         return tasks;
     }
 

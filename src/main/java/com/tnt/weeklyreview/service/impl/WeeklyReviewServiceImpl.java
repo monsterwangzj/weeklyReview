@@ -3,10 +3,13 @@ package com.tnt.weeklyreview.service.impl;
 import com.tnt.weeklyreview.dao.WeeklyReviewMapper;
 import com.tnt.weeklyreview.model.Task;
 import com.tnt.weeklyreview.service.WeeklyReviewService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by zhaojunwzj on 12/24/15.
@@ -31,7 +34,10 @@ public class WeeklyReviewServiceImpl implements WeeklyReviewService {
     }
 
     public List<Task> getTasks4Day(Long userId, int date) {
-        return weeklyReviewMapper.getTasks4Day(userId, date);
+        Map paramMap=new HashMap();
+        paramMap.put("userId",userId);
+        paramMap.put("date",date);
+        return weeklyReviewMapper.getTasks4Day(paramMap);
     }
     
 }
