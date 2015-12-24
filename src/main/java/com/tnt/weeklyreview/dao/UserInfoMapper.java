@@ -3,7 +3,6 @@ package com.tnt.weeklyreview.dao;
 import java.util.List;
 
 import com.tnt.weeklyreview.model.UserInfo;
-import com.tnt.weeklyreview.model.UserInfo;
 
 public interface UserInfoMapper {
     int deleteByPrimaryKey(Integer id);

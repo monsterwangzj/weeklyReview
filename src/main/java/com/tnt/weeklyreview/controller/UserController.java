@@ -30,4 +30,5 @@ public class UserController {
 		List<UserInfo> userInfos = userService.getUsers();
 		return userInfos;
 	}
+
 }

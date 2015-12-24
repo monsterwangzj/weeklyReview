@@ -3,99 +3,60 @@
 <mapper namespace="com.tnt.weeklyreview.dao.WeeklyReviewMapper">
 	<resultMap id="BaseResultMap" type="com.tnt.weeklyreview.model.Task">
 		<id column="id" property="id" jdbcType="INTEGER" />
-		<result column="userId" property="userId" jdbcType="VARCHAR" />
-		<result column="task" property="task" jdbcType="INTEGER" />
-		<result column="rate" property="rate" jdbcType="INTEGER" />
-		<result column="taskType" property="taskType" jdbcType="INTEGER" />
-		<result column="date" property="date" jdbcType="INTEGER" />
-		<result column="createTime" property="createTime" jdbcType="INTEGER" />
-		<result column="lastModified" property="lastModified" jdbcType="INTEGER" />
+		<result column="userid" property="userId" jdbcType="INTEGER" />
+		<result column="task" property="task" jdbcType="VARCHAR" />
+		<result column="rate" property="rate" jdbcType="NUMERIC" />
+		<result column="tasktype" property="taskType" jdbcType="INTEGER" />
+		<result column="date" property="date" jdbcType="VARCHAR" />
+		<result column="createtime" property="createTime" jdbcType="INTEGER" />
+		<result column="lastmodified" property="lastModified" jdbcType="INTEGER" />
 	</resultMap>
+
 	<sql id="Base_Column_List">
-		id, uname, unumber
+		id, userid, task, rate, tasktype, date, createtime, lastmodified
 	</sql>
-	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
-		parameterType="java.lang.Integer">
-		select
-		<include refid="Base_Column_List" />
-		from user_info
-		where id = #{id,jdbcType=INTEGER}
-	</select>
-	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-		delete from
-		user_info
-		where id = #{id,jdbcType=INTEGER}
-	</delete>
-	<insert id="insert" parameterType="com.tnt.weeklyreview.model.UserInfo">
-		insert into user_info (id,
-		uname, unumber
+
+	<insert id="insert" parameterType="com.tnt.weeklyreview.model.Task">
+		insert into task (
+			id, userid, task, rate, tasktype, date, createtime, lastmodified
 		)
 		values (#{id,jdbcType=INTEGER},
-		#{uname,jdbcType=VARCHAR},
-		#{unumber,jdbcType=INTEGER}
+		#{userid,jdbcType=INTEGER},
+		#{task,jdbcType=VARCHAR},
+		#{rate,jdbcType=NUMERIC},
+		#{tasktype,jdbcType=INTEGER},
+		#{date,jdbcType=INTEGER},
+		#{createtime,jdbcType=INTEGER},
+		#{lastmodified,jdbcType=INTEGER}
 		)
 	</insert>
-	<insert id="insertSelective" parameterType="com.tnt.weeklyreview.model.UserInfo">
-		insert into user_info
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="id != null">
-				id,
-			</if>
-			<if test="uname != null">
-				uname,
-			</if>
-			<if test="unumber != null">
-				unumber,
-			</if>
-		</trim>
-		<trim prefix="values (" suffix=")" suffixOverrides=",">
-			<if test="id != null">
-				#{id,jdbcType=INTEGER},
-			</if>
-			<if test="uname != null">
-				#{uname,jdbcType=VARCHAR},
-			</if>
-			<if test="unumber != null">
-				#{unumber,jdbcType=INTEGER},
-			</if>
-		</trim>
-	</insert>
-	<update id="updateByPrimaryKeySelective" parameterType="com.tnt.weeklyreview.model.UserInfo">
-		update user_info
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.tnt.weeklyreview.model.Task">
+		update task
 		<set>
-			<if test="uname != null">
-				uname = #{uname,jdbcType=VARCHAR},
+			<if test="userid != null">
+				userid = #{userid,jdbcType=INTEGER},
 			</if>
-			<if test="unumber != null">
-				unumber = #{unumber,jdbcType=INTEGER},
+			<if test="task != null">
+				task = #{task,jdbcType=VARCHAR},
 			</if>
 		</set>
 		where id = #{id,jdbcType=INTEGER}
 	</update>
-	<update id="updateByPrimaryKey" parameterType="com.tnt.weeklyreview.model.UserInfo">
-		update user_info
-		set uname = #{uname,jdbcType=VARCHAR},
-		unumber =
-		#{unumber,jdbcType=INTEGER}
-		where id = #{id,jdbcType=INTEGER}
-	</update>
 
-	<resultMap type="com.tnt.weeklyreview.model.UserInfo" id="UserCourseMap"
-			   extends="BaseResultMap">
+	<resultMap type="com.tnt.weeklyreview.model.Task" id="TaskMap" extends="BaseResultMap">
 		<collection property="courseInfos" javaType="list"
-			ofType="com.tnt.weeklyreview.model.CourseInfo">
-			<id property="id" column="course_id" jdbcType="INTEGER" />
-			<result property="cname" column="cname" jdbcType="VARCHAR" />
-			<result property="caddress" column="caddress" jdbcType="VARCHAR" />
+			ofType="com.tnt.weeklyreview.model.Task">
+			<id property="id" column="id" jdbcType="INTEGER" />
+			<result property="userid" column="userid" jdbcType="INTEGER" />
+			<result property="task" column="task" jdbcType="VARCHAR" />
 		</collection>
-
-
 	</resultMap>
-	<select id="selectAll" resultMap="UserCourseMap">
-		select u.id, u.uname,
-		u.unumber, c.id course_id, c.cname, c.caddress from user_info u left
-		join course_user_info cu on u.id = cu.uid
-		left join course_info c on
-		cu.cid = c.id
+
+	<select id="getTasks4Day" resultMap="TaskMap" parameterType="java.lang.Integer">
+		select u.id, u.userid,
+		u.task from task u
+		where userid = #{userId,jdbcType=INTEGER}
 	</select>
+
 </mapper>

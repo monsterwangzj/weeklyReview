@@ -1,6 +1,6 @@
 package com.tnt.weeklyreview.controller;
 
-import com.tnt.weeklyreview.model.UserInfo;
+import com.tnt.weeklyreview.model.Task;
 import com.tnt.weeklyreview.service.WeeklyReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,10 +19,10 @@ public class WeeklyReviewController {
     @Autowired
     private WeeklyReviewService weeklyReviewService;
 
-    @RequestMapping("/showInfos")
+    @RequestMapping("/getTask4Day")
     public @ResponseBody Object showUserInfos() {
-        List<UserInfo> userInfos = weeklyReviewService.getUsers();
-        return userInfos;
+        List<Task> tasks = weeklyReviewService.getTasks4Day(1L, 0);
+        return tasks;
     }
 
 }

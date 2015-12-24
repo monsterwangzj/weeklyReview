@@ -8,7 +8,6 @@
     <artifactId>weeklyreview</artifactId>
     <version>1.0</version>
 
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.version>4.1.4.RELEASE</spring.version>
@@ -171,12 +170,32 @@
             <version>1.2.2</version>
         </dependency>
 
-
     </dependencies>
 
 
     <build>
         <finalName>weeklyreivew</finalName>
+
+        <sourceDirectory>src/main/java</sourceDirectory>
+        <testSourceDirectory>src/test/java</testSourceDirectory>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+                <directory>src/main/java/com/tnt/weeklyreview/mapping</directory>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+            </testResource>
+        </testResources>
+
+        <directory>target</directory>
+        <outputDirectory>src/main/webapp/WEB-INF/classes</outputDirectory>
+        <testOutputDirectory>src/main/webapp/WEB-INF/test-classes</testOutputDirectory>
+
         <plugins>
             <!-- Run the JUnit unit tests in an isolated classloader -->
             <plugin>
@@ -209,23 +228,6 @@
                     <encoding>UTF-8</encoding>
                     <docencoding>UTF-8</docencoding>
                     <show>private</show>
-                </configuration>
-            </plugin>
-
-            <!-- 部署至本机 -->
-            <plugin>
-                <groupId>org.codehaus.cargo</groupId>
-                <artifactId>cargo-maven2-plugin</artifactId>
-                <version>1.0</version>
-                <configuration>
-                    <container>
-                        <containerId>tomcat6x</containerId>
-                        <home>D:\WebServer\apache-tomcat-6.0.39</home>
-                    </container>
-                    <configuration>
-                        <type>existing</type>
-                        <home>D:\WebServer\apache-tomcat-6.0.39</home>
-                    </configuration>
                 </configuration>
             </plugin>
 
