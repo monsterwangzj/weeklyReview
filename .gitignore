@@ -1,9 +1,0 @@
-.iml
-target
-.idea
-classes
-lib
-src/main/resources/config.properties
-tmp
-work
-*.iml
