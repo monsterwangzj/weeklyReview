@@ -5,7 +5,7 @@
 		<id column="id" property="id" jdbcType="INTEGER" />
 		<result column="userid" property="userId" jdbcType="INTEGER" />
 		<result column="task" property="task" jdbcType="VARCHAR" />
-		<result column="rate" property="rate" jdbcType="NUMERIC" />
+		<result column="rate" property="rate" jdbcType="FLOAT" />
 		<result column="tasktype" property="taskType" jdbcType="INTEGER" />
 		<result column="date" property="date" jdbcType="VARCHAR" />
 		<result column="createtime" property="createTime" jdbcType="INTEGER" />
@@ -23,7 +23,7 @@
 		values (#{id,jdbcType=INTEGER},
 		#{userId,jdbcType=INTEGER},
 		#{task,jdbcType=VARCHAR},
-		#{rate,jdbcType=NUMERIC},
+		#{rate,jdbcType=FLOAT},
 		#{taskType,jdbcType=INTEGER},
 		#{date,jdbcType=INTEGER},
 		#{createTime,jdbcType=INTEGER},
@@ -48,7 +48,7 @@
 		<id property="id" column="id" jdbcType="INTEGER" />
 		<result property="userId" column="userid" jdbcType="INTEGER" />
 		<result property="task" column="task" jdbcType="VARCHAR" />
-		<result property="rate" column="rate" jdbcType="NUMERIC" />
+		<result property="rate" column="rate" jdbcType="FLOAT" />
 		<result property="taskType" column="tasktype" jdbcType="INTEGER" />
 		<result property="date" column="date" jdbcType="VARCHAR" />
 		<result property="createTime" column="createtime" jdbcType="INTEGER" />

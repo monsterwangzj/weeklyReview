@@ -16,5 +16,4 @@ public interface WeeklyReviewMapper {
     List<Task> getTasks(Long userId, int beginDate, int endDate);
 
     List<Task> getTasks4Day(Map map);
-    
 }

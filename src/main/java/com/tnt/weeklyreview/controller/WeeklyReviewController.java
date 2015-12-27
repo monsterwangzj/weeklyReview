@@ -4,10 +4,12 @@ import com.tnt.weeklyreview.model.Task;
 import com.tnt.weeklyreview.service.WeeklyReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -23,9 +25,15 @@ public class WeeklyReviewController {
     private WeeklyReviewService weeklyReviewService;
 
     @RequestMapping("/getTask4Day")
-    public @ResponseBody Object getTask4Day() {
-        List<Task> tasks = weeklyReviewService.getTasks4Day(1L, 20151224);
-        return tasks;
+    public String getTask4Day(ModelMap info, HttpServletRequest request, HttpServletResponse response) {
+        int date = getDateInt();
+        List<Task> tasks = weeklyReviewService.getTasks4Day(1L, date);
+
+        response.setContentType("application/xml;utf-8");
+        response.setCharacterEncoding("utf-8");
+        info.put("tasks", tasks);
+
+        return "user_index";
     }
 
     @RequestMapping("/saveOrUpdateTask4Day")
