@@ -13,6 +13,8 @@ public interface WeeklyReviewMapper {
 
     int update(Task task);
 
+    int remove(Long id);
+
     List<Task> getTasks(Long userId, int beginDate, int endDate);
 
     List<Task> getTasks4Day(Map map);

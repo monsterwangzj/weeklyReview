@@ -30,6 +30,11 @@ public class Task implements Serializable {
      */
     private int date;
 
+    /**
+     * 状态, 默认0, -1为已删除
+     */
+    private int status;
+
     private long createTime;
 
     private long lastModified;

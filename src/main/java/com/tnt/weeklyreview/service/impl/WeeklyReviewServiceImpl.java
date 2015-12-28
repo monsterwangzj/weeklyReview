@@ -26,7 +26,14 @@ public class WeeklyReviewServiceImpl implements WeeklyReviewService {
     }
 
     public int updateTask(Task task) {
-        return weeklyReviewMapper.update(task);
+        int row = weeklyReviewMapper.update(task);
+        return row;
+    }
+
+    public int removeTask(Long taskId) {
+        int row = weeklyReviewMapper.remove(taskId);
+
+        return row;
     }
 
     public List<Task> getTasks(Long userId, int beginDate, int endDate) {

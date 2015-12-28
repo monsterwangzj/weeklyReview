@@ -26,6 +26,15 @@ public interface WeeklyReviewService {
     int updateTask(Task task);
 
     /**
+     * 删除task
+     *
+     * @param task
+     * @return
+     */
+    int removeTask(Long taskId);
+
+
+    /**
      * 获取某个时间段的task列表
      *
      * @param userId
