@@ -42,18 +42,6 @@ System.out.println(vipTasks);
 
 <script type="text/javascript">
     $(function () {
-        var toolitup2 = $("#jRate2").jRate(options);
-        var toolitup3 = $("#jRate3").jRate(options);
-
-        $('#btn-click2').on('click', function() {
-            toolitup2.setRating(0);
-        });
-        $('#btn-click3').on('click', function () {
-            toolitup3.setRating(0);
-        });
-
-        // 今日重点工作btn click
-
         var vipNum = <%=vipNum%>;
         var lastTrId = "vip-tr" + vipNum;
         $('#vip-taskBtn').on('click', function () {
@@ -82,14 +70,11 @@ System.out.println(vipTasks);
         });
     });
 </script>
-
 </head>
 
 <table border="1">
     <caption><h3>12.23日报</h3></caption>
-    <%
-    String prefix = "vip";
-    %>
+    <%String prefix = "vip";%>
     <tr>
         <td colspan="3">
             <div>
@@ -99,184 +84,162 @@ System.out.println(vipTasks);
         </td>
     </tr>
 
-    <% if (CollectionUtils.isEmpty(vipTasks)) {%>
-        <tr id="<%=prefix%>-tr1">
-            <td>&nbsp;&nbsp;&nbsp;&nbsp;
-                <input id="<%=prefix%>-text1" type="text" size="60" />
-            </td>
-            <td>
-                <div id="<%=prefix%>-jRate1" style="height:30px;width: 100px;float:left"></div>
-                <button id="<%=prefix%>-btn-click1" style="margin-left: 20px">重置</button>
-                <input id="<%=prefix%>-star1" type="hidden" value="0"/>
-            </td>
-            <td>
-                <button id="<%=prefix%>-btn-delete1" style="margin-left: 20px" disabled>删除</button>
-            </td>
-        </tr>
-        <script type="text/javascript">
-            vipFunc(1, 'vip-jRate1', 'vip-star1',0,
-                    'vip-btn-click1', 'vip-btn-delete1', 'vip-tr1', '');
-        </script>
+    <%
+        int k = 1;
+        Task task = null;
+        String content = "";
+        float rateValue = 0;
+        Long taskId = 0L;
+        do {
+            if (!CollectionUtils.isEmpty(vipTasks)) {
+                task = vipTasks.get(k - 1);
+                content = task.getTask();
+                rateValue = task.getRate();
+                taskId = task.getId();
+            }
 
-    <% } else {
-        for (int i = 1; i<= vipTasks.size(); i++) {
-            Task task = vipTasks.get(i-1);
-            String content = task.getTask();
-            float rateValue = task.getRate();
-            Long taskId = task.getId();
-
-            String trId = "vip-tr" + i;
-            String vipRateId = "vip-jRate" + i;
-            String vipStarId = "vip-star" + i;
-            String vipButtonId = "vip-btn-click" + i;
-            Long hiddenTid = taskId;
-            String hiddenInputTid = "id" + i;
-            String deleteId = "vip-deleteId" + i;
+            String trId = prefix + "-tr" + k;
+            String rateId = prefix + "-jRate" + k;
+            String starId = prefix + "-star" + k;
+            String resetButtonId = prefix + "-btn-reset" + k;
+            String hiddenTid = "id" + k;
+            String deleteButtonId = prefix + "-deleteId" + k;
+            String textId = prefix + "-text" + k;
+            String hiddenTidValue = "";
+            if (taskId != null && taskId != 0L) {
+                hiddenTidValue = Long.toString(taskId);
+            }
             %>
             <tr id="<%=trId%>">
                 <td>&nbsp;&nbsp;&nbsp;&nbsp;
-                    <input type="text" size="60" id="vip-text<%=i%>" value="<%=content%>"/>
+                    <input id="<%=textId%>" type="text" size="60" value="<%=content%>"/>
                 </td>
                 <td>
-                    <div id="<%=vipRateId%>" style="height:30px;width: 100px;float:left"></div>
-                    <button id="<%=vipButtonId%>" style="margin-left: 20px">重置</button>
-                    <input id="<%=vipStarId%>" type="hidden" value="<%=rateValue%>"/>
-                    <input id="<%=hiddenInputTid%>" type="hidden" value="<%=hiddenTid%>"/>
+                    <div id="<%=rateId%>" style="height:30px;width: 100px;float:left"></div>
+                    <button id="<%=resetButtonId%>" style="margin-left: 20px">重置</button>
+                    <input id="<%=starId%>" type="hidden" value="<%=rateValue%>"/>
+                    <input id="<%=hiddenTid%>" type="hidden" value="<%=hiddenTidValue%>"/>
                 </td>
                 <td>
-                    <button id="<%=deleteId%>" style="margin-left: 20px">删除</button>
+                    <button id="<%=deleteButtonId%>" style="margin-left: 20px">删除</button>
                 </td>
             </tr>
             <script type="text/javascript">
-                vipFunc(<%=vipNum%>, '<%=vipRateId%>', '<%=vipStarId%>',  <%=rateValue%>, '<%=vipStarId%>',
-                        '<%=vipButtonId%>', '<%=deleteId%>', '<%=trId%>', '<%=taskId%>');
+                vipFunc(<%=vipNum%>, '<%=rateId%>', '<%=starId%>',  <%=rateValue%>, '<%=resetButtonId%>',
+                        '<%=deleteButtonId%>', '<%=trId%>', '<%=hiddenTidValue%>');
             </script>
-        <%
-        }
-    }%>
+
+            <%
+        } while (++k <= vipTasks.size());%>
 
 
 
+    <% prefix = "other"; %>
     <tr>
         <td colspan="3">2, 今日其它工作<img id="vip-taskBtn2" src="/img/add.jpg" alt="点击添加一项" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/></td>
     </tr>
-    <% if (CollectionUtils.isEmpty(otherTasks)) {%>
-        <tr>
-            <td>&nbsp;&nbsp;&nbsp;&nbsp;
-                <input id="other-text1" type="text" size="60"/>
-            </td>
-            <td>
-                <div id="other-jRate1" style="height:30px;width: 100px;float:left"></div>
-                <button id="other-btn-reset1" style="margin-left: 20px">重置</button>
-                <input id="other-star1" type="hidden" value="0"/>
-            </td>
-            <td>
-                <button id="other-btn-delete1" style="margin-left: 20px" disabled>删除</button>
-            </td>
-        </tr>
-        <script type="text/javascript">
-            vipFunc(1, 'other-jRate1', 'other-star1',0,
-                    'other-btn-click1', 'other-btn-delete1', 'other-tr1', '');
-        </script>
-    <% } else {
-        for (int i = 1; i<= otherTasks.size(); i++) {
-            Task task = otherTasks.get(i-1);
-            String content = task.getTask();
-            float rateValue = task.getRate();
-            Long taskId = task.getId();
+    <%
+        k = 1;
+        task = null;
+        content = "";
+        rateValue = 0;
+        taskId = 0L;
+        do {
+            if (!CollectionUtils.isEmpty(otherTasks)) {
+                task = otherTasks.get(k - 1);
+                content = task.getTask();
+                rateValue = task.getRate();
+                taskId = task.getId();
+            }
 
-            String prefix = "other";
-            String trId = prefix + "-tr" + i;
-            String vipRateId = prefix+ "-jRate" + i;
-            String vipStarId = prefix + "-star" + i;
-            String vipButtonId = prefix + "-btn-click" + i;
-            Long hiddenTid = taskId;
-            String hiddenInputTid = "id" + taskId;
-            String deleteId = prefix + "-deleteId" + i;
-            %>
-            <tr id="<%=trId%>">
-                <td>&nbsp;&nbsp;&nbsp;&nbsp;
-                    <input type="text" size="60" id="<%=prefix%>-text<%=i%>" value="<%=content%>"/>
-                </td>
-                <td>
-                    <div id="<%=vipRateId%>" style="height:30px;width: 100px;float:left"></div>
-                    <button id="<%=vipButtonId%>" style="margin-left: 20px">重置</button>
-                    <input id="<%=vipStarId%>" type="hidden" value="<%=rateValue%>"/>
-                    <input id="<%=hiddenInputTid%>" type="hidden" value="<%=hiddenTid%>"/>
-                </td>
-                <td>
-                    <button id="<%=deleteId%>" style="margin-left: 20px">删除</button>
-                </td>
-            </tr>
-            <script type="text/javascript">
-                vipFunc(<%=otherTasks.size()%>, '<%=vipRateId%>', '<%=vipStarId%>', '<%=rateValue%>',
-                        '<%=vipButtonId%>', '<%=deleteId%>', '<%=trId%>', '<%=taskId%>');
-            </script>
-            <%
-        }
-    }%>
-
-
-
-
-    <tr>
-        <td colspan="3">3, 下周工作计划<img id="nextWeek-taskBtn2" src="/img/add.jpg" alt="点击添加一项" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/></td>
-    </tr>
-    <% if (CollectionUtils.isEmpty(nextWeekTasks)) {%>
-    <tr>
-        <td>&nbsp;&nbsp;&nbsp;&nbsp;
-            <input id="nextWeek-text1" type="text" size="60"/>
-        </td>
-        <td>
-            <div id="nextWeek-jRate1" style="height:30px;width: 100px;float:left"></div>
-            <button id="nextWeek-btn-reset1" style="margin-left: 20px">重置</button>
-            <input id="nextWeek-star1" type="hidden" value="0"/>
-        </td>
-        <td>
-            <button id="nextWeek-btn-delete1" style="margin-left: 20px" disabled>删除</button>
-        </td>
-    </tr>
-    <script type="text/javascript">
-        vipFunc(1, 'nextWeek-jRate1', 'nextWeek-star1',0,
-                'nextWeek-btn-click1', 'nextWeek-btn-delete1', 'nextWeek-tr1', '');
-    </script>
-    <% } else {
-        for (int i = 1; i<= nextWeekTasks.size(); i++) {
-            Task task = nextWeekTasks.get(i-1);
-            String content = task.getTask();
-            float rateValue = task.getRate();
-            Long taskId = task.getId();
-
-            String prefix = "nextWeek";
-            String trId = prefix + "-tr" + i;
-            String vipRateId = prefix+ "-jRate" + i;
-            String vipStarId = prefix + "-star" + i;
-            String vipButtonId = prefix + "-btn-click" + i;
-            Long hiddenTid = taskId;
-            String hiddenInputTid = "id" + i;
-            String deleteId = prefix + "-deleteId" + i;
+            String trId = prefix + "-tr" + k;
+            String rateId = prefix + "-jRate" + k;
+            String starId = prefix + "-star" + k;
+            String resetButtonId = prefix + "-btn-reset" + k;
+            String hiddenTid = "id" + k;
+            String deleteButtonId = prefix + "-deleteId" + k;
+            String textId = prefix + "-text" + k;
+            String hiddenTidValue = "";
+            if (taskId != null && taskId != 0L) {
+                hiddenTidValue = Long.toString(taskId);
+            }
     %>
     <tr id="<%=trId%>">
         <td>&nbsp;&nbsp;&nbsp;&nbsp;
-            <input type="text" size="60" id="nextWeek-text<%=i%>" value="<%=content%>"/>
+            <input id="<%=textId%>" type="text" size="60" value="<%=content%>"/>
         </td>
         <td>
-            <div id="<%=vipRateId%>" style="height:30px;width: 100px;float:left"></div>
-            <button id="<%=vipButtonId%>" style="margin-left: 20px">重置</button>
-            <input id="<%=vipStarId%>" type="hidden" value="<%=rateValue%>"/>
-            <input id="<%=hiddenInputTid%>" type="hidden" value="<%=hiddenTid%>"/>
+            <div id="<%=rateId%>" style="height:30px;width: 100px;float:left"></div>
+            <button id="<%=resetButtonId%>" style="margin-left: 20px">重置</button>
+            <input id="<%=starId%>" type="hidden" value="<%=rateValue%>"/>
+            <input id="<%=hiddenTid%>" type="hidden" value="<%=hiddenTidValue%>"/>
         </td>
         <td>
-            <button id="<%=deleteId%>" style="margin-left: 20px">删除</button>
+            <button id="<%=deleteButtonId%>" style="margin-left: 20px">删除</button>
         </td>
     </tr>
     <script type="text/javascript">
-        vipFunc(<%=vipNum%>, '<%=vipRateId%>',  '<%=vipStarId%>', '<%=rateValue%>',
-                '<%=vipButtonId%>', '<%=deleteId%>', '<%=trId%>', '<%=taskId%>');
+        vipFunc(<%=vipNum%>, '<%=rateId%>', '<%=starId%>',  <%=rateValue%>, '<%=resetButtonId%>',
+                '<%=deleteButtonId%>', '<%=trId%>', '<%=hiddenTidValue%>');
     </script>
+
     <%
+        } while (++k <= otherTasks.size());%>
+
+
+
+    <% prefix = "nextWeek"; %>
+    <tr>
+        <td colspan="3">3, 下周工作计划<img id="nextWeek-taskBtn2" src="/img/add.jpg" alt="点击添加一项" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/></td>
+    </tr>
+    <%
+        k = 1;
+        task = null;
+        content = "";
+        rateValue = 0;
+        taskId = 0L;
+        do {
+            if (!CollectionUtils.isEmpty(nextWeekTasks)) {
+                task = nextWeekTasks.get(k - 1);
+                content = task.getTask();
+                rateValue = task.getRate();
+                taskId = task.getId();
             }
-        }%>
+
+            String trId = prefix + "-tr" + k;
+            String rateId = prefix + "-jRate" + k;
+            String starId = prefix + "-star" + k;
+            String resetButtonId = prefix + "-btn-reset" + k;
+            String hiddenTid = "id" + k;
+            String deleteButtonId = prefix + "-deleteId" + k;
+            String textId = prefix + "-text" + k;
+            String hiddenTidValue = "";
+            if (taskId != null && taskId != 0L) {
+                hiddenTidValue = Long.toString(taskId);
+            }
+    %>
+    <tr id="<%=trId%>">
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;
+            <input id="<%=textId%>" type="text" size="60" value="<%=content%>"/>
+        </td>
+        <td>
+            <div id="<%=rateId%>" style="height:30px;width: 100px;float:left"></div>
+            <button id="<%=resetButtonId%>" style="margin-left: 20px">重置</button>
+            <input id="<%=starId%>" type="hidden" value="<%=rateValue%>"/>
+            <input id="<%=hiddenTid%>" type="hidden" value="<%=hiddenTidValue%>"/>
+        </td>
+        <td>
+            <button id="<%=deleteButtonId%>" style="margin-left: 20px">删除</button>
+        </td>
+    </tr>
+    <script type="text/javascript">
+        vipFunc(<%=vipNum%>, '<%=rateId%>', '<%=starId%>',  <%=rateValue%>, '<%=resetButtonId%>',
+                '<%=deleteButtonId%>', '<%=trId%>', '<%=hiddenTidValue%>');
+    </script>
+
+    <%
+        } while (++k <= nextWeekTasks.size());%>
+
 
 
     <tr>
@@ -295,12 +258,12 @@ System.out.println(vipTasks);
     </tr>
     <% } else {
         for (int i = 1; i <= myThinkTasks.size(); i++) {
-            Task task = myThinkTasks.get(i - 1);
-            String content = task.getTask();
-            float rateValue = task.getRate();
-            Long taskId = task.getId();
+            Task task2 = myThinkTasks.get(i - 1);
+            String content2 = task2.getTask();
+            float rateValue2 = task2.getRate();
+            Long taskId2 = task2.getId();
 
-            String prefix = "myThink";
+            prefix = "myThink";
             String trId = prefix + "-tr" + i;
             String vipRateId = prefix + "-jRate" + i;
             String vipStarId = prefix + "-star" + i;
@@ -311,7 +274,7 @@ System.out.println(vipTasks);
     %>
     <tr id="<%=trId%>">
         <td colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;
-            <textarea id="myThink-text<%=i%>" rows="4" cols="92"><%=content%></textarea>
+            <textarea id="myThink-text<%=i%>" rows="4" cols="92"><%=content2%></textarea>
         </td>
         <td>
             <button id="<%=deleteId%>" style="margin-left: 20px">删除</button>
@@ -319,7 +282,7 @@ System.out.println(vipTasks);
     </tr>
     <script type="text/javascript">
         vipFunc(<%=vipNum%>, '<%=vipRateId%>', 0, '<%=vipStarId%>',
-                '<%=vipButtonId%>', '<%=deleteId%>', '<%=trId%>', '<%=taskId%>');
+                '<%=vipButtonId%>', '<%=deleteId%>', '<%=trId%>', '<%=taskId2%>');
     </script>
     <%
             }
