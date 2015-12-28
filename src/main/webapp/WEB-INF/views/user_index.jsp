@@ -44,25 +44,8 @@ System.out.println(vipTasks);
     $(function () {
         var vipNum = <%=vipNum%>;
         var lastTrId = "vip-tr" + vipNum;
-        $('#vip-taskBtn').on('click', function () {
-            console.log("vip task is clicked.");
-            vipNum++;
-            var textId = "vip-text" + vipNum;
-            var jRateId = "vip-jRate" + vipNum;
-            var buttonId = "vip-btn-click" + vipNum;
-            var trid = "vip-tr" + vipNum;
-            var starId = "vip-star" + vipNum;
-            var content = "<tr id='" + trid + "'> <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type='text' size='60' id='" + textId +"'/> </td> <td><div id='" + jRateId + "' style='height:30px;width: 100px;float:left'></div><button id='" + buttonId + "' style='margin-left: 20px'>重置</button><input type='hidden' id='" + starId + "' value='0'/></td><td><button id='vip-btn-delete1' style='margin-left: 20px'>删除</button> </td></tr>";
-            $("#"+lastTrId).after(content);
-            lastTrId = trid;
-
-            options.onSet = function(rating) {
-                $("#" + starId).val(rating);
-            };
-            var toolitup = $("#" + jRateId).jRate(options);
-            $("#" + buttonId).on('click', function () {
-                toolitup.setRating(0);
-            });
+        $('#vip-addTaskBtn').on('click', function () {
+            addTaskFunc(vipNum, "vip");
         });
 
         $('#finish').on('click', function () {
@@ -136,7 +119,7 @@ System.out.println(vipTasks);
 
     <% prefix = "other"; %>
     <tr>
-        <td colspan="3">2, 今日其它工作<img id="vip-taskBtn2" src="/img/add.jpg" alt="点击添加一项" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/></td>
+        <td colspan="3">2, 今日其它工作<img id="<%=prefix%>-addTaskBtn" src="/img/add.jpg" alt="点击添加一项" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/></td>
     </tr>
     <%
         k = 1;
@@ -190,7 +173,7 @@ System.out.println(vipTasks);
 
     <% prefix = "nextWeek"; %>
     <tr>
-        <td colspan="3">3, 下周工作计划<img id="nextWeek-taskBtn2" src="/img/add.jpg" alt="点击添加一项" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/></td>
+        <td colspan="3">3, 下周工作计划<img id="<%=prefix%>-addTaskBtn" src="/img/add.jpg" alt="点击添加一项" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/></td>
     </tr>
     <%
         k = 1;
@@ -243,7 +226,7 @@ System.out.println(vipTasks);
 
 
     <tr>
-        <td colspan="3">4, 我的思考<img id="myThink-taskBtn2" src="/img/add.jpg" alt="点击添加一项"
+        <td colspan="3">4, 我的思考<img id="<%=prefix%>-addTaskBtn" src="/img/add.jpg" alt="点击添加一项"
                                     style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
         </td>
     </tr>

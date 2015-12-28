@@ -81,3 +81,27 @@ var finishOnClicked = function (vipNum) {
         }
     });
 }
+
+/**
+ * 添加任务函数
+ */
+var addTaskFunc = function(taskNum, prefix) {
+    var lastTrId = prefix + "-tr" + taskNum;
+    taskNum++;
+    var textId = prefix + "-text" + taskNum;
+    var jRateId = prefix + "-jRate" + taskNum;
+    var buttonId = prefix + "-btn-click" + taskNum;
+    var trid = prefix + "-tr" + taskNum;
+    var starId = prefix + "-star" + taskNum;
+    var content = "<tr id='" + trid + "'> <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type='text' size='60' id='" + textId +"'/> </td> <td><div id='" + jRateId + "' style='height:30px;width: 100px;float:left'></div><button id='" + buttonId + "' style='margin-left: 20px'>重置</button><input type='hidden' id='" + starId + "' value='0'/></td><td><button id='vip-btn-delete1' style='margin-left: 20px'>删除</button> </td></tr>";
+    $("#"+lastTrId).after(content);
+    lastTrId = trid;
+
+    options.onSet = function(rating) {
+        $("#" + starId).val(rating);
+    };
+    var toolitup = $("#" + jRateId).jRate(options);
+    $("#" + buttonId).on('click', function () {
+        toolitup.setRating(0);
+    });
+}
