@@ -87,26 +87,30 @@ System.out.println(vipTasks);
 
 <table border="1">
     <caption><h3>12.23日报</h3></caption>
+    <%
+    String prefix = "vip";
+    %>
     <tr>
         <td colspan="3">
             <div>
                 <span style="vertical-align: middle">1, 今日重点工作</span>
-                <img id="vip-taskBtn" src="/img/add.jpg" alt="点击添加一项" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
+                <img id="<%=prefix%>-addTaskBtn" src="/img/add.jpg" alt="点击添加一项" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
             </div>
         </td>
     </tr>
+
     <% if (CollectionUtils.isEmpty(vipTasks)) {%>
-        <tr id="vip-tr1">
+        <tr id="<%=prefix%>-tr1">
             <td>&nbsp;&nbsp;&nbsp;&nbsp;
-                <input type="text" size="60" id="vip-text1"/>
+                <input id="<%=prefix%>-text1" type="text" size="60" />
             </td>
             <td>
-                <div id="vip-jRate1" style="height:30px;width: 100px;float:left"></div>
-                <button id="vip-btn-click1" style="margin-left: 20px">重置</button>
-                <input id="vip-star1" type="hidden" value="0"/>
+                <div id="<%=prefix%>-jRate1" style="height:30px;width: 100px;float:left"></div>
+                <button id="<%=prefix%>-btn-click1" style="margin-left: 20px">重置</button>
+                <input id="<%=prefix%>-star1" type="hidden" value="0"/>
             </td>
             <td>
-                <button id="vip-btn-delete1" style="margin-left: 20px" disabled>删除</button>
+                <button id="<%=prefix%>-btn-delete1" style="margin-left: 20px" disabled>删除</button>
             </td>
         </tr>
         <script type="text/javascript">
