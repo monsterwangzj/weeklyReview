@@ -4,7 +4,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <body>
-<%--<h1>工作日报</h1>--%>
+<h1>工作日报</h1>
 
 <%
 String todayDate = (String) request.getAttribute("todayDate");
@@ -72,7 +72,7 @@ System.out.println(vipTasks);
 </head>
 
 <table border="1">
-    <%--<caption><h3><%=todayDate%>日报</h3></caption>--%>
+    <caption><h3><%=todayDate%>日报</h3></caption>
     <%String prefix = "vip";%>
     <tr>
         <td colspan="3">
