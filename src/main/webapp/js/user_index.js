@@ -50,24 +50,34 @@ var vipFunc = function (vipNum, jRateId, vipStarId, rateValue, vipButtonId, vipD
     });
 };
 
+var addSaveParam = function(prefix, elementCount, params) {
+    params[prefix + "Count"] = elementCount;
+
+    for (var i = 1; i <= elementCount; i++) {
+        var id = prefix + "-id" + i;
+        var idValue = $("#" + id).val();
+
+        var textId = prefix + "-text" + i;
+        var textValue = $("#" + textId).val();
+
+        var starId = prefix + "-star" + i;
+        var starValue = $("#" + starId).val();
+
+        params[id] = idValue;
+        params[textId] = textValue;
+        params[starId] = starValue;
+    }
+    return params;
+}
+
 // 保存按钮
 var finishOnClicked = function (vipNum) {
     // 收集参数列表
-    var params2 = {"uid": 1, "vipCount": vipNum};
-    for (var i = 1; i <= vipNum; i++) {
-        var id = "id" + i;
-        var idValue = $("#" + id).val();
-
-        var textId = "vip-text" + i;
-        var textValue = $("#" + textId).val();
-
-        var starId = "vip-star" + i;
-        var starValue = $("#" + starId).val();
-
-        params2[id] = idValue;
-        params2[textId] = textValue;
-        params2[starId] = starValue;
-    }
+    var params2 = {"uid": 1};
+    params2 = addSaveParam("vip", vipNum, params2);
+    params2 = addSaveParam("other", otherNum, params2);
+    params2 = addSaveParam("nextWeek", nextWeekNum, params2);
+    params2 = addSaveParam("myThink", myThinkNum, params2);
     var tUrl = "/weeklyreview/saveOrUpdateTask4Day.htmls";
     $.ajax({
         url: tUrl,
@@ -78,6 +88,9 @@ var finishOnClicked = function (vipNum) {
         timeout: 10000,
         success: function(data) {
             console.log(data);
+
+            // 刷新当前页面
+            window.location.reload();
         }
     });
 }
@@ -85,15 +98,37 @@ var finishOnClicked = function (vipNum) {
 /**
  * 添加任务函数
  */
-var addTaskFunc = function(taskNum, prefix) {
-    var lastTrId = prefix + "-tr" + taskNum;
-    taskNum++;
-    var textId = prefix + "-text" + taskNum;
-    var jRateId = prefix + "-jRate" + taskNum;
-    var buttonId = prefix + "-btn-click" + taskNum;
-    var trid = prefix + "-tr" + taskNum;
-    var starId = prefix + "-star" + taskNum;
-    var content = "<tr id='" + trid + "'> <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type='text' size='60' id='" + textId +"'/> </td> <td><div id='" + jRateId + "' style='height:30px;width: 100px;float:left'></div><button id='" + buttonId + "' style='margin-left: 20px'>重置</button><input type='hidden' id='" + starId + "' value='0'/></td><td><button id='vip-btn-delete1' style='margin-left: 20px'>删除</button> </td></tr>";
+var addTaskFunc = function(prefix) {
+    var num = 0;
+    var lastTrId = prefix + "-tr" + num;
+    if (prefix == 'vip') {
+        num = vipNum;
+        lastTrId = prefix + "-tr" + num;
+        vipNum++;
+        num++;
+    } else if (prefix == 'other') {
+        num = otherNum;
+        lastTrId = prefix + "-tr" + num;
+        otherNum++;
+        num++;
+    } else if (prefix == 'nextWeek') {
+        num = nextWeekNum;
+        lastTrId = prefix + "-tr" + num;
+        nextWeekNum++;
+        num++;
+    } else if (prefix == 'myThink') {
+        num = myThinkNum;
+        lastTrId = prefix + "-tr" + num;
+        myThinkNum++;
+        num++;
+    }
+
+    var textId = prefix + "-text" + num;
+    var jRateId = prefix + "-jRate" + num;
+    var buttonId = prefix + "-btn-click" + num;
+    var trid = prefix + "-tr" + num;
+    var starId = prefix + "-star" + num;
+    var content = "<tr id='" + trid + "'> <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type='text' size='60' id='" + textId +"'/> </td> <td><div id='" + jRateId + "' style='height:30px;width: 100px;float:left'></div><button id='" + buttonId + "' style='margin-left: 20px'>重置</button></td><td><button id='vip-btn-delete1' style='margin-left: 20px'>删除</button> </td></tr>";
     $("#"+lastTrId).after(content);
     lastTrId = trid;
 
@@ -104,4 +139,25 @@ var addTaskFunc = function(taskNum, prefix) {
     $("#" + buttonId).on('click', function () {
         toolitup.setRating(0);
     });
+}
+
+/**
+ * 添加我的思考任务函数
+ */
+var addMyThinkTaskFunc = function(prefix) {
+    var num = 0;
+    var lastTrId = prefix + "-tr" + num;
+    if (prefix == 'myThink') {
+        num = myThinkNum;
+        lastTrId = prefix + "-tr" + num;
+        myThinkNum++;
+        num++;
+    }
+
+    var textId = prefix + "-text" + num;
+    var trid = prefix + "-tr" + num;
+    var deleteId = prefix + "-btn-delete" + num;
+    var content = "<tr id='" + trid + "'><td colspan='2'>&nbsp;&nbsp;&nbsp;&nbsp;<textarea id='" + textId + "' rows='4' cols='92'></textarea></td><td><button id='" + deleteId + "' style='margin-left: 20px'>删除</button></td></tr>";
+    $("#"+lastTrId).after(content);
+    lastTrId = trid;
 }
