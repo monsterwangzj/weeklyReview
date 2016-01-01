@@ -71,13 +71,14 @@ var addSaveParam = function(prefix, elementCount, params) {
 }
 
 // 保存按钮
-var finishOnClicked = function (vipNum) {
+var finishOnClicked = function (dateInt, vipNum) {
     // 收集参数列表
-    var params2 = {"uid": 1};
-    params2 = addSaveParam("vip", vipNum, params2);
-    params2 = addSaveParam("other", otherNum, params2);
-    params2 = addSaveParam("nextWeek", nextWeekNum, params2);
-    params2 = addSaveParam("myThink", myThinkNum, params2);
+    var params2 = {"uid": 1, "dateInt":dateInt};
+
+    params2 = addSaveParam(dateInt +"-vip", vipNum, params2);
+    params2 = addSaveParam(dateInt +"-other", otherNum, params2);
+    params2 = addSaveParam(dateInt +"-nextWeek", nextWeekNum, params2);
+    params2 = addSaveParam(dateInt +"-myThink", myThinkNum, params2);
     var tUrl = "/weeklyreview/saveOrUpdateTask4Day.htmls";
     $.ajax({
         url: tUrl,

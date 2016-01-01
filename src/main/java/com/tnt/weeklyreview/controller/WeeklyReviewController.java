@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -28,39 +30,44 @@ public class WeeklyReviewController {
 
     @RequestMapping("/getTask4Day")
     public String getTask4Day(ModelMap info, HttpServletRequest request, HttpServletResponse response) {
-        int date = getDateInt();
-        List<Task> tasks = weeklyReviewService.getTasks4Day(1L, date);
-
         response.setContentType("application/xml;utf-8");
         response.setCharacterEncoding("utf-8");
 
-        List<Task> vipTasks = new ArrayList<Task>();
-        List<Task> otherTasks = new ArrayList<Task>();
-        List<Task> nextWeekTasks = new ArrayList<Task>();
-        List<Task> myThinkTasks = new ArrayList<Task>();
-        if (!CollectionUtils.isEmpty(tasks)) {
-            for (int i = 0; i < tasks.size(); i++) {
-                Task task = tasks.get(i);
-                if (task != null) {
-                    int type = task.getTaskType();
-                    if (type == 0) { // 今日重点工作
-                        vipTasks.add(task);
-                    } else if (type == 1) { // 其它工作
-                        otherTasks.add(task);
-                    } else if (type == 2) { // 下周工作计划
-                        nextWeekTasks.add(task);
-                    } else if (type == 3) { // 我的思考
-                        myThinkTasks.add(task);
+        List<Integer> dateIntList = dateToWeek();
+        info.put("dateIntList", dateIntList);
+
+        for (int k = 0; k < dateIntList.size(); k++) {
+            int dateInt = dateIntList.get(k);
+
+            List<Task> tasks = weeklyReviewService.getTasks4Day(1L, dateInt);
+            List<Task> vipTasks = new ArrayList<Task>();
+            List<Task> otherTasks = new ArrayList<Task>();
+            List<Task> nextWeekTasks = new ArrayList<Task>();
+            List<Task> myThinkTasks = new ArrayList<Task>();
+            if (!CollectionUtils.isEmpty(tasks)) {
+                for (int i = 0; i < tasks.size(); i++) {
+                    Task task = tasks.get(i);
+                    if (task != null) {
+                        int type = task.getTaskType();
+                        if (type == 0) {
+                            vipTasks.add(task);
+                        } else if (type == 1) {
+                            otherTasks.add(task);
+                        } else if (type == 2) {
+                            nextWeekTasks.add(task);
+                        } else if (type == 3) {
+                            myThinkTasks.add(task);
+                        }
                     }
                 }
             }
+            String todayDate = getDateStr(dateInt);
+            info.put(dateInt + "-todayDate", todayDate);
+            info.put(dateInt + "-vipTasks", vipTasks);
+            info.put(dateInt + "-otherTasks", otherTasks);
+            info.put(dateInt + "-nextWeekTasks", nextWeekTasks);
+            info.put(dateInt + "-myThinkTasks", myThinkTasks);
         }
-        String todayDate = getDateStr();
-        info.put("todayDate", todayDate);
-        info.put("vipTasks", vipTasks);
-        info.put("otherTasks", otherTasks);
-        info.put("nextWeekTasks", nextWeekTasks);
-        info.put("myThinkTasks", myThinkTasks);
 
         return "user_index";
     }
@@ -70,29 +77,31 @@ public class WeeklyReviewController {
     @ResponseBody
     Object saveOrUpdateTask4Day(HttpServletRequest request) {
         String uid = request.getParameter("uid");
+        String dateIntStr = request.getParameter("dateInt");
+        Integer dateInt = Integer.parseInt(dateIntStr);
         Long userId = Long.parseLong(uid);
 
-        String prefix = "vip";
-        String vipCountStr = request.getParameter("vipCount");
+        String prefix = dateIntStr + "-vip";
+        String vipCountStr = request.getParameter(dateIntStr + "-vipCount");
         Integer vipCount = Integer.parseInt(vipCountStr);
-        saveOrUpdateWithType(vipCount, userId, prefix, request);
+        saveOrUpdateWithType(vipCount, userId, prefix, dateInt, request);
 
-        prefix = "other";
-        String otherCountStr = request.getParameter("otherCount");
+        prefix = dateIntStr + "-other";
+        String otherCountStr = request.getParameter(dateIntStr + "-otherCount");
         Integer otherCount = Integer.parseInt(otherCountStr);
-        saveOrUpdateWithType(otherCount, userId, prefix, request);
+        saveOrUpdateWithType(otherCount, userId, prefix, dateInt, request);
 
-        prefix = "nextWeek";
-        String nextWeekCountStr = request.getParameter("nextWeekCount");
+        prefix = dateIntStr + "-nextWeek";
+        String nextWeekCountStr = request.getParameter(dateIntStr + "-nextWeekCount");
         Integer nextWeekCount = Integer.parseInt(nextWeekCountStr);
-        saveOrUpdateWithType(nextWeekCount, userId, prefix, request);
+        saveOrUpdateWithType(nextWeekCount, userId, prefix, dateInt, request);
 
-        prefix = "myThink";
-        String myThinkCountStr = request.getParameter("myThinkCount");
+        prefix = dateIntStr + "-myThink";
+        String myThinkCountStr = request.getParameter(dateIntStr + "-myThinkCount");
         Integer myThinkCount = Integer.parseInt(myThinkCountStr);
-        saveOrUpdateWithType(myThinkCount, userId, prefix, request);
+        saveOrUpdateWithType(myThinkCount, userId, prefix, dateInt, request);
 
-        List<Task> tasks = weeklyReviewService.getTasks4Day(userId, getDateInt());
+        List<Task> tasks = weeklyReviewService.getTasks4Day(userId, getDateInt()); // FIXME: 1/1/16
         return tasks;
     }
 
@@ -118,7 +127,7 @@ public class WeeklyReviewController {
         return id;
     }
 
-    private void saveOrUpdateWithType(int vipCount, Long userId, String prefix, HttpServletRequest request) {
+    private void saveOrUpdateWithType(int vipCount, Long userId, String prefix, int dateInt, HttpServletRequest request) {
         if (vipCount > 0) {
             for (int i = 1; i <= vipCount; i++) {
                 String taskContent = request.getParameter(prefix + "-text" + i);
@@ -131,16 +140,16 @@ public class WeeklyReviewController {
                     continue;
                 }
                 int taskType = 0;
-                if (prefix.equals("vip")) {
+                if (prefix.contains("vip")) {
                     taskType = 0;
-                } else if (prefix.equals("other")) {
+                } else if (prefix.contains("other")) {
                     taskType = 1;
-                } else if (prefix.equals("nextWeek")) {
+                } else if (prefix.contains("nextWeek")) {
                     taskType = 2;
-                } else if (prefix.equals("myThink")) {
+                } else if (prefix.contains("myThink")) {
                     taskType = 3;
                 }
-                Task task = genTask(userId, taskContent, star, taskType);
+                Task task = genTask(userId, taskContent, star, taskType, dateInt);
                 if (id != null) {
                     task.setId(id);
                     int row = weeklyReviewService.updateTask(task);
@@ -165,7 +174,7 @@ public class WeeklyReviewController {
         return "success";
     }
 
-    private Task genTask(Long userId, String taskcontent, float rate, int taskType) {
+    private Task genTask(Long userId, String taskcontent, float rate, int taskType, int dateInt) {
         Date date = new Date();
         long currentTimeMillis = date.getTime();
         Task task = new Task();
@@ -176,13 +185,17 @@ public class WeeklyReviewController {
         task.setRate(rate);
 
         task.setTaskType(taskType);
-        task.setDate(getDateInt());
+        task.setDate(dateInt);
 
         return task;
     }
 
-    private int getDateInt() {
+    private static int getDateInt() {
         Date date = new Date();
+        return getDateInt(date);
+    }
+
+    private static int getDateInt(Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         String dateStr = sdf.format(date);
         int dateInt = Integer.parseInt(dateStr);
@@ -195,6 +208,38 @@ public class WeeklyReviewController {
         String dateStr = sdf.format(date);
 
         return dateStr;
+    }
+
+    private String getDateStr(int dateInt) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        try {
+            Date date = sdf.parse(Integer.toString(dateInt));
+            SimpleDateFormat sdf2 = new SimpleDateFormat("MM.dd");
+            String dateStr = sdf2.format(date);
+
+            return dateStr;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    public static List<Integer> dateToWeek() {
+        int weekDay = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
+        if (weekDay == 0) { //sunday
+            weekDay = 7;
+        }
+        Date fdate;
+        List<Integer> list = new ArrayList<Integer>();
+        Long fTime = new Date().getTime() - weekDay * 24 * 3600000;
+        for (int a = 1; a <= weekDay; a++) {
+            fdate = new Date();
+            fdate.setTime(fTime + (a * 24 * 3600000));
+            int dateInt = getDateInt(fdate);
+            list.add(a - 1, dateInt);
+        }
+        return list;
     }
 
 }
