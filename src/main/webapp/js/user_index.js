@@ -71,7 +71,7 @@ var addSaveParam = function(prefix, elementCount, params) {
 }
 
 // 保存按钮
-var finishOnClicked = function (dateInt, vipNum) {
+var finishOnClicked = function (dateInt, vipNum, otherNum, nextWeekNum, myThinkNum) {
     // 收集参数列表
     var params2 = {"uid": 1, "dateInt":dateInt};
 
@@ -99,28 +99,19 @@ var finishOnClicked = function (dateInt, vipNum) {
 /**
  * 添加任务函数
  */
-var addTaskFunc = function(prefix) {
-    var num = 0;
+var addTaskFunc = function(prefix, num) {
     var lastTrId = prefix + "-tr" + num;
-    if (prefix == 'vip') {
-        num = vipNum;
+    if (prefix.indexOf('vip')) {
         lastTrId = prefix + "-tr" + num;
-        vipNum++;
         num++;
-    } else if (prefix == 'other') {
-        num = otherNum;
+    } else if (prefix.indexOf( 'other')) {
         lastTrId = prefix + "-tr" + num;
-        otherNum++;
         num++;
-    } else if (prefix == 'nextWeek') {
-        num = nextWeekNum;
+    } else if (prefix.indexOf('nextWeek')) {
         lastTrId = prefix + "-tr" + num;
-        nextWeekNum++;
         num++;
-    } else if (prefix == 'myThink') {
-        num = myThinkNum;
+    } else if (prefix.indexOf('myThink')) {
         lastTrId = prefix + "-tr" + num;
-        myThinkNum++;
         num++;
     }
 
@@ -129,7 +120,7 @@ var addTaskFunc = function(prefix) {
     var buttonId = prefix + "-btn-click" + num;
     var trid = prefix + "-tr" + num;
     var starId = prefix + "-star" + num;
-    var content = "<tr id='" + trid + "'> <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type='text' size='60' id='" + textId +"'/> </td> <td><div id='" + jRateId + "' style='height:30px;width: 100px;float:left'></div><button id='" + buttonId + "' style='margin-left: 20px'>重置</button></td><td><button id='vip-btn-delete1' style='margin-left: 20px'>删除</button> </td></tr>";
+    var content = "<tr id='" + trid + "'> <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type='text' size='60' id='" + textId +"'/> </td> <td><div id='" + jRateId + "' style='height:30px;width: 100px;float:left'></div><button id='" + buttonId + "' style='margin-left: 20px'>重置</button><input id='" + starId + "' type='hidden' value=''/></td><td><button id='vip-btn-delete1' style='margin-left: 20px'>删除</button> </td></tr>";
     $("#"+lastTrId).after(content);
     lastTrId = trid;
 

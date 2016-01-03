@@ -48,27 +48,27 @@ for (int j = dateIntList.size()-1;j>=0;j--) {
     System.out.println(vipTasks);
     %>
     <script type="text/javascript">
-        var vipNum = <%=vipNum%>;
-        var otherNum = <%=otherNum%>;
-        var nextWeekNum = <%=nextWeekNum%>;
-        var myThinkNum = <%=myThinkNum%>;
         $(function () {
-            var lastTrId = "vip-tr" + vipNum;
+            var vipNum = <%=vipNum%>;
+            var otherNum = <%=otherNum%>;
+            var nextWeekNum = <%=nextWeekNum%>;
+            var myThinkNum = <%=myThinkNum%>;
+//            var lastTrId = "vip-tr" + vipNum;
             $('#<%=dateInt%>-vip-addTaskBtn').on('click', function () {
-                addTaskFunc("vip");
+                addTaskFunc("<%=dateInt%>-vip", vipNum++);
             });
             $('#<%=dateInt%>-other-addTaskBtn').on('click', function () {
-                addTaskFunc("other");
+                addTaskFunc("<%=dateInt%>-other", otherNum++);
             });
             $('#<%=dateInt%>-nextWeek-addTaskBtn').on('click', function () {
-                addTaskFunc("nextWeek");
+                addTaskFunc("<%=dateInt%>-nextWeek", nextWeekNum++);
             });
             $('#<%=dateInt%>-myThink-addTaskBtn').on('click', function () {
-                addMyThinkTaskFunc("myThink");
+                addMyThinkTaskFunc("<%=dateInt%>-myThink");
             });
 
             $('#<%=dateInt%>-finish').on('click', function () {
-                finishOnClicked(<%=dateInt%>, vipNum);
+                finishOnClicked(<%=dateInt%>, vipNum, otherNum, nextWeekNum, myThinkNum);
             });
         });
     </script>
