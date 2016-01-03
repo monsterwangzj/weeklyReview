@@ -13,6 +13,8 @@ public interface UserInfoMapper {
 
     UserInfo selectByPrimaryKey(Integer id);
 
+    UserInfo selectByUsernamenPwd(UserInfo userInfo);
+
     int updateByPrimaryKeySelective(UserInfo record);
 
     int updateByPrimaryKey(UserInfo record);

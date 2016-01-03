@@ -19,6 +19,12 @@ public class UserServiceImpl implements UserService {
 		return userInfoMapper.selectByPrimaryKey(id);
 	}
 
+	public UserInfo getUser(String username, String password) {
+		UserInfo userInfo = new UserInfo();
+		userInfo.setUname(username);
+		return userInfoMapper.selectByUsernamenPwd(userInfo);
+	}
+
 	public List<UserInfo> getUsers() {
 		return userInfoMapper.selectAll();
 	}

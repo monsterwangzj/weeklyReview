@@ -4,17 +4,22 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <body>
-<h1>工作日报</h1>
 <%
-List<Integer> dateIntList = (List<Integer>) request.getAttribute("dateIntList");
+    List<Integer> dateIntList = (List<Integer>) request.getAttribute("dateIntList");
+    String uid = (String) request.getAttribute("uid");
+
+    System.out.println("------------uid:" + uid);
 %>
+<div>
+<h1>小码日报</h1><a href="/user/logout.htmls">退出(<%=uid%>)</a>
+</div>
+
 <head>
-<script src="js/jquery.min.js"></script>
-<script src="js/jRate.js"></script>
-<script src="js/user_index.js"></script>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jRate.js"></script>
+<script src="/js/user_index.js"></script>
+<script type="text/javascript">var uid=<%=uid%>;</script>
 </head>
-
-
 <%
 for (int j = dateIntList.size()-1;j>=0;j--) {
     Integer dateInt = dateIntList.get(j);
@@ -68,7 +73,7 @@ for (int j = dateIntList.size()-1;j>=0;j--) {
             });
 
             $('#<%=dateInt%>-finish').on('click', function () {
-                finishOnClicked(<%=dateInt%>, vipNum, otherNum, nextWeekNum, myThinkNum);
+                finishOnClicked(uid, <%=dateInt%>, vipNum, otherNum, nextWeekNum, myThinkNum);
             });
         });
     </script>

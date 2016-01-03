@@ -71,9 +71,9 @@ var addSaveParam = function(prefix, elementCount, params) {
 }
 
 // 保存按钮
-var finishOnClicked = function (dateInt, vipNum, otherNum, nextWeekNum, myThinkNum) {
+var finishOnClicked = function (uid, dateInt, vipNum, otherNum, nextWeekNum, myThinkNum) {
     // 收集参数列表
-    var params2 = {"uid": 1, "dateInt":dateInt};
+    var params2 = {"uid": uid, "dateInt":dateInt};
 
     params2 = addSaveParam(dateInt +"-vip", vipNum, params2);
     params2 = addSaveParam(dateInt +"-other", otherNum, params2);

@@ -1,5 +1,6 @@
 package com.tnt.weeklyreview.controller;
 
+import com.javafx.tools.doclets.formats.html.SourceToHTMLConverter;
 import com.tnt.weeklyreview.model.Task;
 import com.tnt.weeklyreview.service.WeeklyReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.net.ssl.SSLServerSocket;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.ParseException;
@@ -30,16 +33,36 @@ public class WeeklyReviewController {
 
     @RequestMapping("/getTask4Day")
     public String getTask4Day(ModelMap info, HttpServletRequest request, HttpServletResponse response) {
+        // 验证登录
+        boolean isLogin = false;
+        Long userId = null;
+        Cookie[] cookies = request.getCookies();//这样便可以获取一个cookie数组
+        for(Cookie cookie : cookies){
+            String cookieName = cookie.getName();
+            if (cookieName.equals("uid")) {
+                String uid = cookie.getValue();
+                try {
+                    userId = Long.parseLong(uid);
+                    isLogin = true;
+                } catch (Exception e) {}
+            }
+
+        }
+        if (!isLogin) {
+            return "redirect:/user/login.htmls";
+        }
+
+
         response.setContentType("application/xml;utf-8");
         response.setCharacterEncoding("utf-8");
 
         List<Integer> dateIntList = dateToWeek();
         info.put("dateIntList", dateIntList);
-
+        info.put("uid", userId.toString());
         for (int k = 0; k < dateIntList.size(); k++) {
             int dateInt = dateIntList.get(k);
 
-            List<Task> tasks = weeklyReviewService.getTasks4Day(1L, dateInt);
+            List<Task> tasks = weeklyReviewService.getTasks4Day(userId, dateInt);
             List<Task> vipTasks = new ArrayList<Task>();
             List<Task> otherTasks = new ArrayList<Task>();
             List<Task> nextWeekTasks = new ArrayList<Task>();

@@ -16,6 +16,15 @@
 		from user_info
 		where id = #{id,jdbcType=INTEGER}
 	</select>
+
+	<select id="selectByUsernamenPwd" resultMap="BaseResultMap"
+			parameterType="com.tnt.weeklyreview.model.UserInfo">
+		select
+		<include refid="Base_Column_List" />
+		from user_info
+		where uname = #{uname,jdbcType=VARCHAR}
+	</select>
+
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
 		delete from
 		user_info
