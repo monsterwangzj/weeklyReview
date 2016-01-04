@@ -35,17 +35,20 @@ public class WeeklyReviewController {
         boolean isLogin = false;
         Long userId = null;
         Cookie[] cookies = request.getCookies();//这样便可以获取一个cookie数组
-        for(Cookie cookie : cookies){
-            String cookieName = cookie.getName();
-            if (cookieName.equals("uid")) {
-                String uid = cookie.getValue();
-                try {
-                    userId = Long.parseLong(uid);
-                    isLogin = true;
-                } catch (Exception e) {}
+        if (cookies != null && cookies.length > 0) {
+            for (Cookie cookie : cookies) {
+                String cookieName = cookie.getName();
+                if (cookieName.equals("uid")) {
+                    String uid = cookie.getValue();
+                    try {
+                        userId = Long.parseLong(uid);
+                        isLogin = true;
+                    } catch (Exception e) {
+                    }
+                }
             }
-
         }
+
         if (!isLogin) {
             return "redirect:/user/login.htmls";
         }
