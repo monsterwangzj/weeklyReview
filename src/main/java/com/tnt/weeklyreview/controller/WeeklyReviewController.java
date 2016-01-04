@@ -1,6 +1,5 @@
 package com.tnt.weeklyreview.controller;
 
-import com.javafx.tools.doclets.formats.html.SourceToHTMLConverter;
 import com.tnt.weeklyreview.model.Task;
 import com.tnt.weeklyreview.service.WeeklyReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.net.ssl.SSLServerSocket;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
