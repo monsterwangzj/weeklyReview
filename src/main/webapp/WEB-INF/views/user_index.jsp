@@ -69,7 +69,7 @@ for (int j = dateIntList.size()-1;j>=0;j--) {
                 addTaskFunc("<%=dateInt%>-nextWeek", nextWeekNum++);
             });
             $('#<%=dateInt%>-myThink-addTaskBtn').on('click', function () {
-                addMyThinkTaskFunc("<%=dateInt%>-myThink");
+                addMyThinkTaskFunc("<%=dateInt%>-myThink", myThinkNum++);
             });
 
             $('#<%=dateInt%>-finish').on('click', function () {
@@ -81,7 +81,7 @@ for (int j = dateIntList.size()-1;j>=0;j--) {
         <caption><h3><%=todayDate%>日报</h3></caption>
         <%String prefix = dateInt + "-vip";%>
         <tr>
-            <td colspan="3">
+            <td colspan="4">
                 <div>
                     <span style="vertical-align: middle">1, 今日重点工作</span>
                     <img id="<%=prefix%>-addTaskBtn" src="/img/add.jpg" alt="点击添加一项" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
@@ -108,6 +108,7 @@ for (int j = dateIntList.size()-1;j>=0;j--) {
                 String starId = prefix + "-star" + k;
                 String resetButtonId = prefix + "-btn-reset" + k;
                 String hiddenTid = prefix + "-id" + k;
+                String editButtonId = prefix + "-editId" + k;
                 String deleteButtonId = prefix + "-deleteId" + k;
                 String textId = prefix + "-text" + k;
                 String hiddenTidValue = "";
@@ -126,7 +127,13 @@ for (int j = dateIntList.size()-1;j>=0;j--) {
                 <input id="<%=hiddenTid%>" type="hidden" value="<%=hiddenTidValue%>"/>
             </td>
             <td>
-                <button id="<%=deleteButtonId%>" style="margin-left: 20px">删除</button>
+                <button id="<%=editButtonId%>" style="margin-left: 5px">选项</button>
+                <button id="<%=deleteButtonId%>" style="margin-left: 10px; margin-right: 5px">删除</button>
+            </td>
+            <td>
+                <img id="1111<%=deleteButtonId%>-addTaskBtn" src="/img/up-down-arrow.png" alt="点击添加一项" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
+                <img id="2222<%=deleteButtonId%>-addTaskBtn" src="/img/up-down-arrow.png" alt="点击添加一项" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
+
             </td>
         </tr>
         <script type="text/javascript">
@@ -141,7 +148,7 @@ for (int j = dateIntList.size()-1;j>=0;j--) {
 
         <% prefix = dateInt + "-other"; %>
         <tr>
-            <td colspan="3">2, 今日其它工作<img id="<%=prefix%>-addTaskBtn" src="/img/add.jpg" alt="点击添加一项" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/></td>
+            <td colspan="4">2, 今日其它工作<img id="<%=prefix%>-addTaskBtn" src="/img/add.jpg" alt="点击添加一项" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/></td>
         </tr>
         <%
             k = 1;
@@ -162,6 +169,7 @@ for (int j = dateIntList.size()-1;j>=0;j--) {
                 String starId = prefix + "-star" + k;
                 String resetButtonId = prefix + "-btn-reset" + k;
                 String hiddenTid = prefix + "-id" + k;
+                String editButtonId = prefix + "-editId" + k;
                 String deleteButtonId = prefix + "-deleteId" + k;
                 String textId = prefix + "-text" + k;
                 String hiddenTidValue = "";
@@ -180,7 +188,12 @@ for (int j = dateIntList.size()-1;j>=0;j--) {
                 <input id="<%=hiddenTid%>" type="hidden" value="<%=hiddenTidValue%>"/>
             </td>
             <td>
-                <button id="<%=deleteButtonId%>" style="margin-left: 20px">删除</button>
+                <button id="<%=editButtonId%>" style="margin-left: 5px">编辑</button>
+                <button id="<%=deleteButtonId%>" style="margin-left: 10px; margin-right: 5px">删除</button>
+            </td>
+            <td>
+                <img id="1111<%=deleteButtonId%>-addTaskBtn" src="/img/add.jpg" alt="点击添加一项" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
+                <img id="2222<%=deleteButtonId%>-addTaskBtn" src="/img/up-down-arrow.png" alt="点击添加一项" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
             </td>
         </tr>
         <script type="text/javascript">
@@ -195,7 +208,7 @@ for (int j = dateIntList.size()-1;j>=0;j--) {
 
         <% prefix = dateInt + "-nextWeek"; %>
         <tr>
-            <td colspan="3">3, 下周工作计划<img id="<%=prefix%>-addTaskBtn" src="/img/add.jpg" alt="点击添加一项" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/></td>
+            <td colspan="4">3, 下周工作计划<img id="<%=prefix%>-addTaskBtn" src="/img/add.jpg" alt="点击添加一项" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/></td>
         </tr>
         <%
             k = 1;
@@ -216,6 +229,7 @@ for (int j = dateIntList.size()-1;j>=0;j--) {
                 String starId = prefix + "-star" + k;
                 String resetButtonId = prefix + "-btn-reset" + k;
                 String hiddenTid = prefix + "-id" + k;
+                String editButtonId = prefix + "-editId" + k;
                 String deleteButtonId = prefix + "-deleteId" + k;
                 String textId = prefix + "-text" + k;
                 String hiddenTidValue = "";
@@ -234,7 +248,12 @@ for (int j = dateIntList.size()-1;j>=0;j--) {
                 <input id="<%=hiddenTid%>" type="hidden" value="<%=hiddenTidValue%>"/>
             </td>
             <td>
-                <button id="<%=deleteButtonId%>" style="margin-left: 20px">删除</button>
+                <button id="<%=editButtonId%>" style="margin-left: 5px">编辑</button>
+                <button id="<%=deleteButtonId%>" style="margin-left: 10px; margin-right: 5px">删除</button>
+            </td>
+            <td>
+                <img id="1111<%=deleteButtonId%>-addTaskBtn" src="/img/add.jpg" alt="点击添加一项" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
+                <img id="2222<%=deleteButtonId%>-addTaskBtn" src="/img/up-down-arrow.png" alt="点击添加一项" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
             </td>
         </tr>
         <script type="text/javascript">
@@ -249,7 +268,7 @@ for (int j = dateIntList.size()-1;j>=0;j--) {
 
         <% prefix = dateInt + "-myThink"; %>
         <tr>
-            <td colspan="3">4, 我的思考<img id="<%=prefix%>-addTaskBtn" src="/img/add.jpg" alt="点击添加一项"
+            <td colspan="4">4, 我的思考<img id="<%=prefix%>-addTaskBtn" src="/img/add.jpg" alt="点击添加一项"
                                         style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
             </td>
         </tr>
@@ -287,6 +306,11 @@ for (int j = dateIntList.size()-1;j>=0;j--) {
             <td>
                 <button id="<%=deleteId%>" style="margin-left: 20px">删除</button>
                 <input id="<%=hiddenInputTid%>" type="hidden" value="<%=hiddenTidValue%>"/>
+            </td>
+            <td>
+                <img id="1111<%=hiddenInputTid%>-addTaskBtn" src="/img/add.jpg" alt="点击添加一项" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
+                <img id="2222<%=hiddenInputTid%>-addTaskBtn" src="/img/up-down-arrow.png" alt="点击添加一项" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
+
             </td>
         </tr>
         <script type="text/javascript">

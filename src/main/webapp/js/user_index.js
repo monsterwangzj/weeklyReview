@@ -101,16 +101,16 @@ var finishOnClicked = function (uid, dateInt, vipNum, otherNum, nextWeekNum, myT
  */
 var addTaskFunc = function(prefix, num) {
     var lastTrId = prefix + "-tr" + num;
-    if (prefix.indexOf('vip')) {
+    if (prefix.indexOf('vip') != -1) {
         lastTrId = prefix + "-tr" + num;
         num++;
-    } else if (prefix.indexOf( 'other')) {
+    } else if (prefix.indexOf( 'other') != -1) {
         lastTrId = prefix + "-tr" + num;
         num++;
-    } else if (prefix.indexOf('nextWeek')) {
+    } else if (prefix.indexOf('nextWeek') != -1) {
         lastTrId = prefix + "-tr" + num;
         num++;
-    } else if (prefix.indexOf('myThink')) {
+    } else if (prefix.indexOf('myThink') != -1) {
         lastTrId = prefix + "-tr" + num;
         num++;
     }
@@ -136,13 +136,10 @@ var addTaskFunc = function(prefix, num) {
 /**
  * 添加我的思考任务函数
  */
-var addMyThinkTaskFunc = function(prefix) {
-    var num = 0;
+var addMyThinkTaskFunc = function(prefix, num) {
     var lastTrId = prefix + "-tr" + num;
-    if (prefix == 'myThink') {
-        num = myThinkNum;
+    if (prefix.indexOf('myThink') != -1) {
         lastTrId = prefix + "-tr" + num;
-        myThinkNum++;
         num++;
     }
 
