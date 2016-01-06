@@ -7,8 +7,6 @@
 <%
     List<Integer> dateIntList = (List<Integer>) request.getAttribute("dateIntList");
     String uid = (String) request.getAttribute("uid");
-
-    System.out.println("------------uid:" + uid);
 %>
 <div>
 <h1>小码日报</h1><a href="/user/logout.htmls">退出(<%=uid%>)</a>
@@ -58,7 +56,7 @@ for (int j = dateIntList.size()-1;j>=0;j--) {
             var otherNum = <%=otherNum%>;
             var nextWeekNum = <%=nextWeekNum%>;
             var myThinkNum = <%=myThinkNum%>;
-//            var lastTrId = "vip-tr" + vipNum;
+
             $('#<%=dateInt%>-vip-addTaskBtn').on('click', function () {
                 addTaskFunc("<%=dateInt%>-vip", vipNum++);
             });
@@ -95,12 +93,14 @@ for (int j = dateIntList.size()-1;j>=0;j--) {
             String content = "";
             float rateValue = 0;
             Long taskId = 0L;
+            Integer priority = 0;
             do {
                 if (!CollectionUtils.isEmpty(vipTasks)) {
                     task = vipTasks.get(k - 1);
                     content = task.getTask();
                     rateValue = task.getRate();
                     taskId = task.getId();
+                    priority = task.getPriority();
                 }
 
                 String trId = prefix + "-tr" + k;
@@ -111,10 +111,13 @@ for (int j = dateIntList.size()-1;j>=0;j--) {
                 String editButtonId = prefix + "-editId" + k;
                 String deleteButtonId = prefix + "-deleteId" + k;
                 String textId = prefix + "-text" + k;
-                String hiddenTidValue = "";
+                String upBtnId = prefix + "-upBtn" + k;
+                String downBtnId = prefix + "-downBtn" + k;
+                 String hiddenTidValue = "";
                 if (taskId != null && taskId != 0L) {
                     hiddenTidValue = Long.toString(taskId);
                 }
+                String priorityId = prefix + "-priority" + k;
         %>
         <tr id="<%=trId%>">
             <td>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -125,21 +128,31 @@ for (int j = dateIntList.size()-1;j>=0;j--) {
                 <button id="<%=resetButtonId%>" style="margin-left: 20px">重置</button>
                 <input id="<%=starId%>" type="hidden" value="<%=rateValue%>"/>
                 <input id="<%=hiddenTid%>" type="hidden" value="<%=hiddenTidValue%>"/>
+                <input id="<%=priorityId%>" type="hidden" value="<%=priority%>"/>
             </td>
             <td>
                 <button id="<%=editButtonId%>" style="margin-left: 5px">选项</button>
                 <button id="<%=deleteButtonId%>" style="margin-left: 10px; margin-right: 5px">删除</button>
             </td>
             <td>
-                <img id="1111<%=deleteButtonId%>-addTaskBtn" src="/img/up-down-arrow.png" alt="点击添加一项" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
-                <img id="2222<%=deleteButtonId%>-addTaskBtn" src="/img/up-down-arrow.png" alt="点击添加一项" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
-
+                <img id="<%=upBtnId%>" src="/img/up1.png" alt="移动到下面" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
+                <img id="<%=downBtnId%>" src="/img/down1.png" alt="移动到上面" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
             </td>
+
+            <script type="text/javascript">
+                vipFunc(<%=vipNum%>, '<%=rateId%>', '<%=starId%>',  <%=rateValue%>, '<%=resetButtonId%>',
+                        '<%=deleteButtonId%>', '<%=trId%>', '<%=hiddenTidValue%>');
+
+                $('#<%=upBtnId%>').on('click', function() {
+                    var $tr = $(this).parents("tr");
+                    if ($tr.index() != 0) {
+                    $tr.fadeOut().fadeIn();
+                        $tr.prev().before($tr);
+                    }
+                });
+            </script>
         </tr>
-        <script type="text/javascript">
-            vipFunc(<%=vipNum%>, '<%=rateId%>', '<%=starId%>',  <%=rateValue%>, '<%=resetButtonId%>',
-                    '<%=deleteButtonId%>', '<%=trId%>', '<%=hiddenTidValue%>');
-        </script>
+
 
         <%
             } while (++k <= vipTasks.size());%>
@@ -173,6 +186,8 @@ for (int j = dateIntList.size()-1;j>=0;j--) {
                 String deleteButtonId = prefix + "-deleteId" + k;
                 String textId = prefix + "-text" + k;
                 String hiddenTidValue = "";
+                String upBtnId = prefix + "-upBtn" + k;
+                String downBtnId = prefix + "-downBtn" + k;
                 if (taskId != null && taskId != 0L) {
                     hiddenTidValue = Long.toString(taskId);
                 }
@@ -192,8 +207,8 @@ for (int j = dateIntList.size()-1;j>=0;j--) {
                 <button id="<%=deleteButtonId%>" style="margin-left: 10px; margin-right: 5px">删除</button>
             </td>
             <td>
-                <img id="1111<%=deleteButtonId%>-addTaskBtn" src="/img/add.jpg" alt="点击添加一项" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
-                <img id="2222<%=deleteButtonId%>-addTaskBtn" src="/img/up-down-arrow.png" alt="点击添加一项" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
+                <img id="<%=upBtnId%>" src="/img/up1.png" alt="移动到下面" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
+                <img id="<%=downBtnId%>" src="/img/down1.png" alt="移动到上面" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
             </td>
         </tr>
         <script type="text/javascript">
@@ -233,6 +248,8 @@ for (int j = dateIntList.size()-1;j>=0;j--) {
                 String deleteButtonId = prefix + "-deleteId" + k;
                 String textId = prefix + "-text" + k;
                 String hiddenTidValue = "";
+                String upBtnId = prefix + "-upBtn" + k;
+                String downBtnId = prefix + "-downBtn" + k;
                 if (taskId != null && taskId != 0L) {
                     hiddenTidValue = Long.toString(taskId);
                 }
@@ -252,8 +269,8 @@ for (int j = dateIntList.size()-1;j>=0;j--) {
                 <button id="<%=deleteButtonId%>" style="margin-left: 10px; margin-right: 5px">删除</button>
             </td>
             <td>
-                <img id="1111<%=deleteButtonId%>-addTaskBtn" src="/img/add.jpg" alt="点击添加一项" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
-                <img id="2222<%=deleteButtonId%>-addTaskBtn" src="/img/up-down-arrow.png" alt="点击添加一项" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
+                <img id="<%=upBtnId%>" src="/img/up1.png" alt="移动到下面" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
+                <img id="<%=downBtnId%>" src="/img/down1.png" alt="移动到上面" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
             </td>
         </tr>
         <script type="text/javascript">
@@ -298,6 +315,8 @@ for (int j = dateIntList.size()-1;j>=0;j--) {
                     hiddenTidValue = Long.toString(taskId);
                 }
                 String textAreaId = prefix + "-text" + k;
+                String upBtnId = prefix + "-upBtn" + k;
+                String downBtnId = prefix + "-downBtn" + k;
         %>
         <tr id="<%=trId%>">
             <td colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;
@@ -308,9 +327,8 @@ for (int j = dateIntList.size()-1;j>=0;j--) {
                 <input id="<%=hiddenInputTid%>" type="hidden" value="<%=hiddenTidValue%>"/>
             </td>
             <td>
-                <img id="1111<%=hiddenInputTid%>-addTaskBtn" src="/img/add.jpg" alt="点击添加一项" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
-                <img id="2222<%=hiddenInputTid%>-addTaskBtn" src="/img/up-down-arrow.png" alt="点击添加一项" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
-
+                <img id="<%=upBtnId%>" src="/img/up1.png" alt="移动到下面" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
+                <img id="<%=downBtnId%>" src="/img/down1.png" alt="移动到上面" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
             </td>
         </tr>
         <script type="text/javascript">
@@ -322,16 +340,12 @@ for (int j = dateIntList.size()-1;j>=0;j--) {
         %>
 
         <tr>
-            <td colspan="3" align="right"><button id="<%=dateInt%>-finish">保存</button></td>
+            <td colspan="4" align="right"><button id="<%=dateInt%>-finish">保存</button></td>
         </tr>
     </table>
-
     <%
 }
-
 %>
-
-
 
 </body>
 </html>

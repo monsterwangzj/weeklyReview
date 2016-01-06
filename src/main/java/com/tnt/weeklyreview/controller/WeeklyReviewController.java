@@ -140,7 +140,7 @@ public class WeeklyReviewController {
         return star;
     }
 
-    private Long getIdValue(String idStr) {
+    private Long getLongValue(String idStr) {
         Long id = null;
         try {
             id = Long.parseLong(idStr);
@@ -156,9 +156,11 @@ public class WeeklyReviewController {
             for (int i = 1; i <= vipCount; i++) {
                 String taskContent = request.getParameter(prefix + "-text" + i);
                 String starStr = request.getParameter(prefix + "-star" + i);
+                String priorityStr = request.getParameter(prefix + "-priority" + i);
                 String idStr = request.getParameter(prefix + "-id" + i);
                 float star = getStarValue(starStr);
-                Long id = getIdValue(idStr);
+                Long id = getLongValue(idStr);
+                Long priority = getLongValue(priorityStr);
 
                 if (taskContent == null || taskContent.equals("")) {
                     continue;
@@ -173,7 +175,7 @@ public class WeeklyReviewController {
                 } else if (prefix.contains("myThink")) {
                     taskType = 3;
                 }
-                Task task = genTask(userId, taskContent, star, taskType, dateInt);
+                Task task = genTask(userId, taskContent, star, taskType, dateInt, priority.intValue());
                 if (id != null) {
                     task.setId(id);
                     int row = weeklyReviewService.updateTask(task);
@@ -198,7 +200,7 @@ public class WeeklyReviewController {
         return "success";
     }
 
-    private Task genTask(Long userId, String taskcontent, float rate, int taskType, int dateInt) {
+    private Task genTask(Long userId, String taskcontent, float rate, int taskType, int dateInt, int priority) {
         Date date = new Date();
         long currentTimeMillis = date.getTime();
         Task task = new Task();
@@ -208,6 +210,7 @@ public class WeeklyReviewController {
         task.setTask(taskcontent);
         task.setRate(rate);
 
+        task.setPriority(priority);
         task.setTaskType(taskType);
         task.setDate(dateInt);
 

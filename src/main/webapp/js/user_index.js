@@ -63,9 +63,13 @@ var addSaveParam = function(prefix, elementCount, params) {
         var starId = prefix + "-star" + i;
         var starValue = $("#" + starId).val();
 
+        var priorityId = prefix + "-priority" + i;
+        var priorityValue = elementCount - i;
+
         params[id] = idValue;
         params[textId] = textValue;
         params[starId] = starValue;
+        params[priorityId] = priorityValue;
     }
     return params;
 }

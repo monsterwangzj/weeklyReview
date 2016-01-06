@@ -8,17 +8,18 @@
 		<result column="rate" property="rate" jdbcType="FLOAT" />
 		<result column="tasktype" property="taskType" jdbcType="INTEGER" />
 		<result column="date" property="date" jdbcType="VARCHAR" />
+		<result column="priority" property="priority" jdbcType="INTEGER" />
 		<result column="createtime" property="createTime" jdbcType="INTEGER" />
 		<result column="lastmodified" property="lastModified" jdbcType="INTEGER" />
 	</resultMap>
 
 	<sql id="Base_Column_List">
-		id, userid, task, rate, tasktype, date, createtime, lastmodified
+		id, userid, task, rate, tasktype, date, priority, createtime, lastmodified
 	</sql>
 
 	<insert id="save" parameterType="com.tnt.weeklyreview.model.Task">
 		insert into task (
-			id, userid, task, rate, tasktype, date, createtime, lastmodified
+			id, userid, task, rate, tasktype, date, priority, createtime, lastmodified
 		)
 		values (#{id,jdbcType=INTEGER},
 		#{userId,jdbcType=INTEGER},
@@ -26,6 +27,7 @@
 		#{rate,jdbcType=FLOAT},
 		#{taskType,jdbcType=INTEGER},
 		#{date,jdbcType=INTEGER},
+		#{priority,jdbcType=INTEGER},
 		#{createTime,jdbcType=INTEGER},
 		#{lastModified,jdbcType=INTEGER}
 		)
@@ -39,6 +41,9 @@
 			</if>
 			<if test="rate != null">
 				rate = #{rate,jdbcType=FLOAT},
+			</if>
+			<if test="priority != null">
+				priority = #{priority,jdbcType=INTEGER},
 			</if>
 		</set>
 		where id = #{id,jdbcType=INTEGER}
@@ -59,14 +64,16 @@
 		<result property="rate" column="rate" jdbcType="FLOAT" />
 		<result property="taskType" column="tasktype" jdbcType="INTEGER" />
 		<result property="date" column="date" jdbcType="VARCHAR" />
+		<result property="priority" column="priority" jdbcType="INTEGER" />
 		<result property="createTime" column="createtime" jdbcType="INTEGER" />
 		<result property="lastModified" column="lastmodified" jdbcType="INTEGER" />
 	</resultMap>
 
 	<select id="getTasks4Day" resultMap="TaskMap" parameterType="java.util.Map">
 		select u.id, u.userid,
-		u.task,u.rate,u.tasktype,u.date,u.createtime,u.lastmodified from task u
+		u.task,u.rate,u.tasktype,u.date,u.priority,u.createtime,u.lastmodified from task u
 		where userid = #{userId,jdbcType=INTEGER} and status = 0 and date = #{date,jdbcType=INTEGER}
+		order by priority DESC, id ASC
 	</select>
 
 </mapper>

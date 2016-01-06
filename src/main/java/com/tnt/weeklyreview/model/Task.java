@@ -30,6 +30,8 @@ public class Task implements Serializable {
      */
     private int date;
 
+    private int priority;
+
     /**
      * 状态, 默认0, -1为已删除
      */
@@ -77,6 +79,22 @@ public class Task implements Serializable {
 
     public void setDate(int date) {
         this.date = date;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public long getCreateTime() {
