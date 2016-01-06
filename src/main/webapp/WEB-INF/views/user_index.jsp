@@ -146,8 +146,28 @@ for (int j = dateIntList.size()-1;j>=0;j--) {
                 $('#<%=upBtnId%>').on('click', function() {
                     var $tr = $(this).parents("tr");
                     if ($tr.index() != 0) {
-                    $tr.fadeOut().fadeIn();
+                        var currentPriorityId = $tr.attr('id').replace('tr', 'priority');
+                        var previousPriorityId = $tr.prev().attr('id').replace('tr', 'priority');
+                        var currentPriority = $('#' + currentPriorityId).attr('value');
+                        var previousPriority = $('#' + previousPriorityId).attr('value');
+                        $('#' + currentPriorityId).attr('value', previousPriority);
+                        $('#' + previousPriorityId).attr('value', currentPriority);
+                        $tr.fadeOut().fadeIn();
                         $tr.prev().before($tr);
+                    }
+                });
+
+                $('#<%=downBtnId%>').on('click', function() {
+                    var $tr = $(this).parents("tr");
+                    if ($tr.index() != 0) {
+                        var currentPriorityId = $tr.attr('id').replace('tr', 'priority');
+                        var nextPriorityId = $tr.next().attr('id').replace('tr', 'priority');
+                        var currentPriority = $('#' + currentPriorityId).attr('value');
+                        var nextPriority = $('#' + nextPriorityId).attr('value');
+                        $('#' + currentPriorityId).attr('value', nextPriority);
+                        $('#' + nextPriorityId).attr('value', currentPriority);
+                        $tr.fadeOut().fadeIn();
+                        $tr.next().after($tr);
                     }
                 });
             </script>
