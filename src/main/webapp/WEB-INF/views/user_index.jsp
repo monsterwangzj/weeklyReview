@@ -94,8 +94,10 @@ for (int j = dateIntList.size()-1;j>=0;j--) {
             float rateValue = 0;
             Long taskId = 0L;
             Integer priority = 0;
+            Integer totalCount = 0;
             do {
                 if (!CollectionUtils.isEmpty(vipTasks)) {
+                    totalCount = vipTasks.size();
                     task = vipTasks.get(k - 1);
                     content = task.getTask();
                     rateValue = task.getRate();
@@ -118,6 +120,15 @@ for (int j = dateIntList.size()-1;j>=0;j--) {
                     hiddenTidValue = Long.toString(taskId);
                 }
                 String priorityId = prefix + "-priority" + k;
+
+                String upImgUrl = "/img/up1.png";
+                String downImgUrl = "/img/down1.png";
+//                if (k - 1 == 0) {
+//                    upImgUrl = "/img/up2.png";
+//                }
+//                if (k == totalCount) {
+//                    downImgUrl = "/img/down2.png";
+//                }
         %>
         <tr id="<%=trId%>">
             <td>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -135,8 +146,8 @@ for (int j = dateIntList.size()-1;j>=0;j--) {
                 <button id="<%=deleteButtonId%>" style="margin-left: 10px; margin-right: 5px">删除</button>
             </td>
             <td>
-                <img id="<%=upBtnId%>" src="/img/up1.png" alt="移动到下面" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
-                <img id="<%=downBtnId%>" src="/img/down1.png" alt="移动到上面" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
+                <img id="<%=upBtnId%>" src="<%=upImgUrl%>" alt="移动到下面" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
+                <img id="<%=downBtnId%>" src="<%=downImgUrl%>" alt="移动到上面" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
             </td>
 
             <script type="text/javascript">
@@ -152,8 +163,11 @@ for (int j = dateIntList.size()-1;j>=0;j--) {
                         var previousPriority = $('#' + previousPriorityId).attr('value');
                         $('#' + currentPriorityId).attr('value', previousPriority);
                         $('#' + previousPriorityId).attr('value', currentPriority);
-                        $tr.fadeOut().fadeIn();
+//                        $tr.fadeOut().fadeIn();
                         $tr.prev().before($tr);
+
+                        // TODO 监测是否到了第一行
+
                     }
                 });
 
@@ -166,7 +180,7 @@ for (int j = dateIntList.size()-1;j>=0;j--) {
                         var nextPriority = $('#' + nextPriorityId).attr('value');
                         $('#' + currentPriorityId).attr('value', nextPriority);
                         $('#' + nextPriorityId).attr('value', currentPriority);
-                        $tr.fadeOut().fadeIn();
+//                        $tr.fadeOut().fadeIn();
                         $tr.next().after($tr);
                     }
                 });
