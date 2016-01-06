@@ -203,12 +203,14 @@ for (int j = dateIntList.size()-1;j>=0;j--) {
             content = "";
             rateValue = 0;
             taskId = 0L;
+            priority = 0;
             do {
                 if (!CollectionUtils.isEmpty(otherTasks)) {
                     task = otherTasks.get(k - 1);
                     content = task.getTask();
                     rateValue = task.getRate();
                     taskId = task.getId();
+                    priority = task.getPriority();
                 }
 
                 String trId = prefix + "-tr" + k;
@@ -225,6 +227,10 @@ for (int j = dateIntList.size()-1;j>=0;j--) {
                 if (taskId != null && taskId != 0L) {
                     hiddenTidValue = Long.toString(taskId);
                 }
+                String priorityId = prefix + "-priority" + k;
+
+                String upImgUrl = "/img/up1.png";
+                String downImgUrl = "/img/down1.png";
         %>
         <tr id="<%=trId%>">
             <td>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -235,20 +241,55 @@ for (int j = dateIntList.size()-1;j>=0;j--) {
                 <button id="<%=resetButtonId%>" style="margin-left: 20px">重置</button>
                 <input id="<%=starId%>" type="hidden" value="<%=rateValue%>"/>
                 <input id="<%=hiddenTid%>" type="hidden" value="<%=hiddenTidValue%>"/>
+                <input id="<%=priorityId%>" type="hidden" value="<%=priority%>"/>
             </td>
             <td>
                 <button id="<%=editButtonId%>" style="margin-left: 5px">编辑</button>
                 <button id="<%=deleteButtonId%>" style="margin-left: 10px; margin-right: 5px">删除</button>
             </td>
             <td>
-                <img id="<%=upBtnId%>" src="/img/up1.png" alt="移动到下面" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
-                <img id="<%=downBtnId%>" src="/img/down1.png" alt="移动到上面" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
+                <img id="<%=upBtnId%>" src="<%=upImgUrl%>" alt="移动到下面" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
+                <img id="<%=downBtnId%>" src="<%=downImgUrl%>" alt="移动到上面" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
             </td>
+
+            <script type="text/javascript">
+                vipFunc(<%=vipNum%>, '<%=rateId%>', '<%=starId%>',  <%=rateValue%>, '<%=resetButtonId%>',
+                        '<%=deleteButtonId%>', '<%=trId%>', '<%=hiddenTidValue%>');
+
+
+                $('#<%=upBtnId%>').on('click', function() {
+                    var $tr = $(this).parents("tr");
+                    if ($tr.index() != 0) {
+                        var currentPriorityId = $tr.attr('id').replace('tr', 'priority');
+                        var previousPriorityId = $tr.prev().attr('id').replace('tr', 'priority');
+                        var currentPriority = $('#' + currentPriorityId).attr('value');
+                        var previousPriority = $('#' + previousPriorityId).attr('value');
+                        $('#' + currentPriorityId).attr('value', previousPriority);
+                        $('#' + previousPriorityId).attr('value', currentPriority);
+//                        $tr.fadeOut().fadeIn();
+                        $tr.prev().before($tr);
+
+                        // TODO 监测是否到了第一行
+
+                    }
+                });
+
+                $('#<%=downBtnId%>').on('click', function() {
+                    var $tr = $(this).parents("tr");
+                    if ($tr.index() != 0) {
+                        var currentPriorityId = $tr.attr('id').replace('tr', 'priority');
+                        var nextPriorityId = $tr.next().attr('id').replace('tr', 'priority');
+                        var currentPriority = $('#' + currentPriorityId).attr('value');
+                        var nextPriority = $('#' + nextPriorityId).attr('value');
+                        $('#' + currentPriorityId).attr('value', nextPriority);
+                        $('#' + nextPriorityId).attr('value', currentPriority);
+//                        $tr.fadeOut().fadeIn();
+                        $tr.next().after($tr);
+                    }
+                });
+            </script>
         </tr>
-        <script type="text/javascript">
-            vipFunc(<%=vipNum%>, '<%=rateId%>', '<%=starId%>',  <%=rateValue%>, '<%=resetButtonId%>',
-                    '<%=deleteButtonId%>', '<%=trId%>', '<%=hiddenTidValue%>');
-        </script>
+
 
         <%
             } while (++k <= otherTasks.size());%>
@@ -265,12 +306,14 @@ for (int j = dateIntList.size()-1;j>=0;j--) {
             content = "";
             rateValue = 0;
             taskId = 0L;
+            priority = 0;
             do {
                 if (!CollectionUtils.isEmpty(nextWeekTasks)) {
                     task = nextWeekTasks.get(k - 1);
                     content = task.getTask();
                     rateValue = task.getRate();
                     taskId = task.getId();
+                    priority = task.getPriority();
                 }
 
                 String trId = prefix + "-tr" + k;
@@ -287,6 +330,10 @@ for (int j = dateIntList.size()-1;j>=0;j--) {
                 if (taskId != null && taskId != 0L) {
                     hiddenTidValue = Long.toString(taskId);
                 }
+                String priorityId = prefix + "-priority" + k;
+
+                String upImgUrl = "/img/up1.png";
+                String downImgUrl = "/img/down1.png";
         %>
         <tr id="<%=trId%>">
             <td>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -297,20 +344,55 @@ for (int j = dateIntList.size()-1;j>=0;j--) {
                 <button id="<%=resetButtonId%>" style="margin-left: 20px">重置</button>
                 <input id="<%=starId%>" type="hidden" value="<%=rateValue%>"/>
                 <input id="<%=hiddenTid%>" type="hidden" value="<%=hiddenTidValue%>"/>
+                <input id="<%=priorityId%>" type="hidden" value="<%=priority%>"/>
             </td>
             <td>
                 <button id="<%=editButtonId%>" style="margin-left: 5px">编辑</button>
                 <button id="<%=deleteButtonId%>" style="margin-left: 10px; margin-right: 5px">删除</button>
             </td>
             <td>
-                <img id="<%=upBtnId%>" src="/img/up1.png" alt="移动到下面" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
-                <img id="<%=downBtnId%>" src="/img/down1.png" alt="移动到上面" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
+                <img id="<%=upBtnId%>" src="<%=upImgUrl%>" alt="移动到下面" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
+                <img id="<%=downBtnId%>" src="<%=downImgUrl%>" alt="移动到上面" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
             </td>
+
+            <script type="text/javascript">
+                vipFunc(<%=vipNum%>, '<%=rateId%>', '<%=starId%>',  <%=rateValue%>, '<%=resetButtonId%>',
+                        '<%=deleteButtonId%>', '<%=trId%>', '<%=hiddenTidValue%>');
+
+
+                $('#<%=upBtnId%>').on('click', function() {
+                    var $tr = $(this).parents("tr");
+                    if ($tr.index() != 0) {
+                        var currentPriorityId = $tr.attr('id').replace('tr', 'priority');
+                        var previousPriorityId = $tr.prev().attr('id').replace('tr', 'priority');
+                        var currentPriority = $('#' + currentPriorityId).attr('value');
+                        var previousPriority = $('#' + previousPriorityId).attr('value');
+                        $('#' + currentPriorityId).attr('value', previousPriority);
+                        $('#' + previousPriorityId).attr('value', currentPriority);
+//                        $tr.fadeOut().fadeIn();
+                        $tr.prev().before($tr);
+
+                        // TODO 监测是否到了第一行
+
+                    }
+                });
+
+                $('#<%=downBtnId%>').on('click', function() {
+                    var $tr = $(this).parents("tr");
+                    if ($tr.index() != 0) {
+                        var currentPriorityId = $tr.attr('id').replace('tr', 'priority');
+                        var nextPriorityId = $tr.next().attr('id').replace('tr', 'priority');
+                        var currentPriority = $('#' + currentPriorityId).attr('value');
+                        var nextPriority = $('#' + nextPriorityId).attr('value');
+                        $('#' + currentPriorityId).attr('value', nextPriority);
+                        $('#' + nextPriorityId).attr('value', currentPriority);
+//                        $tr.fadeOut().fadeIn();
+                        $tr.next().after($tr);
+                    }
+                });
+            </script>
         </tr>
-        <script type="text/javascript">
-            vipFunc(<%=vipNum%>, '<%=rateId%>', '<%=starId%>',  <%=rateValue%>, '<%=resetButtonId%>',
-                    '<%=deleteButtonId%>', '<%=trId%>', '<%=hiddenTidValue%>');
-        </script>
+
 
         <%
             } while (++k <= nextWeekTasks.size());%>
@@ -331,11 +413,13 @@ for (int j = dateIntList.size()-1;j>=0;j--) {
             task = null;
             content = "";
             taskId = 0L;
+            priority = 0;
             do {
                 if (!CollectionUtils.isEmpty(myThinkTasks)) {
                     task = myThinkTasks.get(k - 1);
                     content = task.getTask();
                     taskId = task.getId();
+                    priority = task.getPriority();
                 }
 
                 String trId = prefix + "-tr" + k;
@@ -348,6 +432,8 @@ for (int j = dateIntList.size()-1;j>=0;j--) {
                 if (taskId != null && taskId != 0L) {
                     hiddenTidValue = Long.toString(taskId);
                 }
+                String priorityId = prefix + "-priority" + k;
+
                 String textAreaId = prefix + "-text" + k;
                 String upBtnId = prefix + "-upBtn" + k;
                 String downBtnId = prefix + "-downBtn" + k;
@@ -359,16 +445,52 @@ for (int j = dateIntList.size()-1;j>=0;j--) {
             <td>
                 <button id="<%=deleteId%>" style="margin-left: 20px">删除</button>
                 <input id="<%=hiddenInputTid%>" type="hidden" value="<%=hiddenTidValue%>"/>
+                <input id="<%=priorityId%>" type="hidden" value="<%=priority%>"/>
             </td>
             <td>
                 <img id="<%=upBtnId%>" src="/img/up1.png" alt="移动到下面" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
                 <img id="<%=downBtnId%>" src="/img/down1.png" alt="移动到上面" style="vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer"/>
             </td>
+
+            <script type="text/javascript">
+                vipFunc(<%=vipNum%>, '<%=vipRateId%>', 0, '<%=vipStarId%>',
+                        '<%=vipButtonId%>', '<%=deleteId%>', '<%=trId%>', '<%=taskId%>');
+
+
+                $('#<%=upBtnId%>').on('click', function() {
+                    var $tr = $(this).parents("tr");
+                    if ($tr.index() != 0) {
+                        var currentPriorityId = $tr.attr('id').replace('tr', 'priority');
+                        var previousPriorityId = $tr.prev().attr('id').replace('tr', 'priority');
+                        var currentPriority = $('#' + currentPriorityId).attr('value');
+                        var previousPriority = $('#' + previousPriorityId).attr('value');
+                        $('#' + currentPriorityId).attr('value', previousPriority);
+                        $('#' + previousPriorityId).attr('value', currentPriority);
+
+//                        $tr.fadeOut().fadeIn();
+                        $tr.prev().before($tr);
+
+                        // TODO 监测是否到了第一行
+
+                    }
+                });
+
+                $('#<%=downBtnId%>').on('click', function() {
+                    var $tr = $(this).parents("tr");
+                    if ($tr.index() != 0) {
+                        var currentPriorityId = $tr.attr('id').replace('tr', 'priority');
+                        var nextPriorityId = $tr.next().attr('id').replace('tr', 'priority');
+                        var currentPriority = $('#' + currentPriorityId).attr('value');
+                        var nextPriority = $('#' + nextPriorityId).attr('value');
+                        $('#' + currentPriorityId).attr('value', nextPriority);
+                        $('#' + nextPriorityId).attr('value', currentPriority);
+//                        $tr.fadeOut().fadeIn();
+                        $tr.next().after($tr);
+                    }
+                });
+            </script>
         </tr>
-        <script type="text/javascript">
-            vipFunc(<%=vipNum%>, '<%=vipRateId%>', 0, '<%=vipStarId%>',
-                    '<%=vipButtonId%>', '<%=deleteId%>', '<%=trId%>', '<%=taskId%>');
-        </script>
+
         <%
             } while (++k <= myThinkTasks.size());
         %>

@@ -52,28 +52,30 @@ var vipFunc = function (vipNum, jRateId, vipStarId, rateValue, vipButtonId, vipD
 
 var addSaveParam = function(prefix, elementCount, params) {
     params[prefix + "Count"] = elementCount;
+    var $tr = $('#' + prefix + '-tr1');
+    var trArray = $tr.parent().find("tr[id^=" + prefix + "]");
+    for (var i = 1; i <= trArray.length; i++) {
+        var rowEle = trArray[i - 1];
+        var rowId = $(rowEle).attr('id');
 
-    for (var i = 1; i <= elementCount; i++) {
-        var id = prefix + "-id" + i;
+        var id = rowId.replace('tr', 'id');
         var idValue = $("#" + id).val();
 
-        var textId = prefix + "-text" + i;
+        var textId = rowId.replace('tr', 'text');
         var textValue = $("#" + textId).val();
 
-        var starId = prefix + "-star" + i;
+        var starId = rowId.replace('tr', 'star');
         var starValue = $("#" + starId).val();
 
-        var priorityId = prefix + "-priority" + i;
-        var priorityValue = $("#" + priorityId).val();
-        if (!priorityValue || priorityValue == 0) {
-            priorityValue = elementCount - i  + 1;
-        }
+        var priorityId = rowId.replace('tr', 'priority');
+        var priorityValue = elementCount - i  + 1;
 
         params[id] = idValue;
         params[textId] = textValue;
         params[starId] = starValue;
         params[priorityId] = priorityValue;
     }
+
     return params;
 }
 
@@ -127,7 +129,10 @@ var addTaskFunc = function(prefix, num) {
     var buttonId = prefix + "-btn-click" + num;
     var trid = prefix + "-tr" + num;
     var starId = prefix + "-star" + num;
-    var content = "<tr id='" + trid + "'> <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type='text' size='60' id='" + textId +"'/> </td> <td><div id='" + jRateId + "' style='height:30px;width: 100px;float:left'></div><button id='" + buttonId + "' style='margin-left: 20px'>重置</button><input id='" + starId + "' type='hidden' value=''/></td><td><button id='vip-btn-delete1' style='margin-left: 20px'>删除</button> </td></tr>";
+    var upBtnId = prefix + "-upBtn" + num;
+    var downBtnId = prefix + "-downBtn" + num;
+    var content = "<tr id='" + trid + "'> <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type='text' size='60' id='" + textId +"'/> </td> <td><div id='" + jRateId + "' style='height:30px;width: 100px;float:left'></div><button id='" + buttonId + "' style='margin-left: 20px'>重置</button><input id='" + starId + "' type='hidden' value=''/></td><td><button id='vip-btn-delete1' style='margin-left: 20px'>删除</button> </td>" +
+        "<td><img id='"+upBtnId+"' src='/img/up1.png' alt='移动到下面' style='vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer'/><img id='"+downBtnId+"' src='/img/down1.png' alt='移动到上面' style='vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer'/></td></tr>";
     $("#"+lastTrId).after(content);
     lastTrId = trid;
 
@@ -153,7 +158,10 @@ var addMyThinkTaskFunc = function(prefix, num) {
     var textId = prefix + "-text" + num;
     var trid = prefix + "-tr" + num;
     var deleteId = prefix + "-btn-delete" + num;
-    var content = "<tr id='" + trid + "'><td colspan='2'>&nbsp;&nbsp;&nbsp;&nbsp;<textarea id='" + textId + "' rows='4' cols='92'></textarea></td><td><button id='" + deleteId + "' style='margin-left: 20px'>删除</button></td></tr>";
+    var upBtnId = prefix + "-upBtn" + num;
+    var downBtnId = prefix + "-downBtn" + num;
+    var content = "<tr id='" + trid + "'><td colspan='2'>&nbsp;&nbsp;&nbsp;&nbsp;<textarea id='" + textId + "' rows='4' cols='92'></textarea></td><td><button id='" + deleteId + "' style='margin-left: 20px'>删除</button></td>" +
+        "<td><img id='"+upBtnId+"' src='/img/up1.png' alt='移动到下面' style='vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer'/><img id='"+downBtnId+"' src='/img/down1.png' alt='移动到上面' style='vertical-align: middle;width: 24px;padding:0px;margin:0px;cursor:pointer'/></td></tr>";
     $("#"+lastTrId).after(content);
     lastTrId = trid;
 }
